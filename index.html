@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>עָפָר</title>
+<meta name="description" content="For dust you are, and to dust you shall return.">
+<meta property="og:title" content="עָפָר — Aphar">
+<meta property="og:description" content="The last economy that needs humans.">
+<meta property="og:image" content="https://aphar.io/img/storm.jpg">
+<meta property="og:url" content="https://aphar.io">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@0xAphar">
+<meta name="twitter:title" content="עָפָר — Aphar">
+<meta name="twitter:description" content="The last economy that needs humans.">
+<meta name="twitter:image" content="https://aphar.io/img/storm.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,168,76,0.3) transparent;
+  }
+  html::-webkit-scrollbar { width: 4px; }
+  html::-webkit-scrollbar-track { background: transparent; }
+  html::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
+  body {
+    background: #000;
+    color: #E8E0D0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  #preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease, visibility 1s ease;
+  }
+  #preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  #preloader .loader-text {
+    font-size: 14px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.5);
+    animation: loaderPulse 2s ease-in-out infinite;
+  }
+  @keyframes loaderPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+  #dust-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+  .grain {
+    position: fixed;
+    inset: -50%;
+    width: 200%; height: 200%;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainDrift 8s steps(10) infinite;
+  }
+  @keyframes grainDrift {
+    0%, 100% { transform: translate(0,0); }
+    20% { transform: translate(-5%,-10%); }
+    40% { transform: translate(3%,-15%); }
+    60% { transform: translate(12%,9%); }
+    80% { transform: translate(-1%,7%); }
+  }
+  .scroll-indicator {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeInDelayed 2s ease-out 3.5s forwards;
+    transition: opacity 0.6s ease;
+  }
+  .scroll-indicator.hidden { opacity: 0 !important; }
+  .scroll-indicator span {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.4);
+  }
+  .scroll-arrow {
+    width: 16px;
+    height: 16px;
+    border-right: 1px solid rgba(201,168,76,0.4);
+    border-bottom: 1px solid rgba(201,168,76,0.4);
+    transform: rotate(45deg);
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { transform: rotate(45deg) translate(0,0); opacity: 0.4; }
+    50% { transform: rotate(45deg) translate(4px,4px); opacity: 1; }
+  }
+  @keyframes fadeInDelayed {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  .section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .section-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 1.4s ease-out, transform 8s ease-out;
+    will-change: opacity, transform;
+  }
+  .section.visible .section-bg img {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+  .section-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.75) 100%);
+  }
+  .section--face .section-overlay {
+    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.82) 100%);
+  }
+  .section--eye .section-overlay {
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.85) 100%);
+  }
+  .section-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 900px;
+  }
+  .text-hebrew {
+    font-size: clamp(26px, 5vw, 50px);
+    font-weight: 300;
+    color: #C9A84C;
+    direction: rtl;
+    line-height: 1.5;
+    text-shadow: 0 0 60px rgba(201,168,76,0.2), 0 2px 20px rgba(0,0,0,0.8);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease-out 0.3s, transform 1.2s ease-out 0.3s;
+  }
+  .text-verse-ref {
+    font-size: clamp(10px, 1.4vw, 13px);
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.35);
+    margin-top: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease-out 0.6s, transform 1.2s ease-out 0.6s;
+  }
+  .text-main {
+    font-size: clamp(22px, 4vw, 46px);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(232,224,208,0.9);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease-out 0.3s, transform 1.2s ease-out 0.3s;
+  }
+  .text-sub {
+    font-size: clamp(11px, 1.5vw, 15px);
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.45);
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out 0.8s, transform 1s ease-out 0.8s;
+  }
+  .section.visible .text-hebrew,
+  .section.visible .text-main,
+  .section.visible .text-verse-ref,
+  .section.visible .text-sub {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .divider {
+    width: 50px;
+    height: 1px;
+    background: rgba(201,168,76,0.25);
+    margin: 24px auto;
+    opacity: 0;
+    transition: opacity 1s ease-out 0.5s;
+  }
+  .section.visible .divider { opacity: 1; }
+  .countdown-wrap {
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.2s ease-out 0.6s, transform 1.2s ease-out 0.6s;
+  }
+  .section.visible .countdown-wrap {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .countdown {
+    display: flex;
+    gap: clamp(18px, 5vw, 44px);
+    align-items: center;
+    justify-content: center;
+  }
+  .countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .countdown-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(32px, 7vw, 64px);
+    font-weight: 300;
+    color: #C9A84C;
+    line-height: 1;
+    min-width: 2ch;
+    text-shadow: 0 0 40px rgba(201,168,76,0.25), 0 2px 20px rgba(0,0,0,0.8);
+  }
+  .countdown-label {
+    font-size: clamp(8px, 1.1vw, 11px);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(232,224,208,0.25);
+  }
+  .countdown-sep {
+    font-size: clamp(22px, 5vw, 44px);
+    font-weight: 300;
+    color: rgba(201,168,76,0.15);
+    padding-bottom: 20px;
+  }
+  .bottom-whisper {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    font-size: 11px;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: rgba(232,224,208,0.1);
+    opacity: 0;
+    transition: opacity 1.5s ease-out 1.5s;
+    white-space: nowrap;
+  }
+  .section.visible .bottom-whisper { opacity: 1; }
+  #progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.6), rgba(201,168,76,0.2));
+    z-index: 200;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  @media (max-width: 600px) {
+    .section { min-height: 100svh; }
+    .section-bg img { object-position: center center; }
+    .section--face .section-bg img { object-position: center 30%; }
+  }
+  ::selection {
+    background: rgba(201,168,76,0.25);
+    color: #E8E0D0;
+  }
+</style>
+</head>
+<body>
+<div id="preloader">
+  <div class="loader-text">עָפָר</div>
+</div>
+<div id="progress"></div>
+<canvas id="dust-canvas"></canvas>
+<div class="grain"></div>
+<div class="scroll-indicator" id="scrollIndicator">
+  <span>Scroll</span>
+  <div class="scroll-arrow"></div>
+</div>
+<div class="section section--face" data-section="0">
+  <div class="section-bg">
+    <img src="img/face.jpg" alt="" loading="eager">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-hebrew">כִּי־עָפָר אַתָּה וְאֶל־עָפָר תָּשׁוּב</div>
+    <div class="text-verse-ref">Genesis 3 : 19</div>
+    <div class="divider"></div>
+    <div class="text-sub">For dust you are</div>
+  </div>
+</div>
+<div class="section section--storm" data-section="1">
+  <div class="section-bg">
+    <img src="img/storm.jpg" alt="" loading="lazy">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-main">and to dust you shall return</div>
+  </div>
+</div>
+<div class="section section--hourglass" data-section="2">
+  <div class="section-bg">
+    <img src="img/hourglass.jpg" alt="" loading="lazy">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-main">Every token has a lifespan</div>
+  </div>
+</div>
+<div class="section section--hands" data-section="3">
+  <div class="section-bg">
+    <img src="img/hands.jpg" alt="" loading="lazy">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-main">If you stop moving, it dies</div>
+  </div>
+</div>
+<div class="section section--ruins" data-section="4">
+  <div class="section-bg">
+    <img src="img/ruins.jpg" alt="" loading="lazy">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-main">The last economy that needs humans</div>
+  </div>
+</div>
+<div class="section section--eye" data-section="5">
+  <div class="section-bg">
+    <img src="img/eye.jpg" alt="" loading="lazy">
+  </div>
+  <div class="section-overlay"></div>
+  <div class="section-content">
+    <div class="text-sub" style="margin-top:0; margin-bottom: 28px;">Something is coming</div>
+    <div class="countdown-wrap">
+      <div class="countdown">
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-d">--</div>
+          <div class="countdown-label">Days</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-h">--</div>
+          <div class="countdown-label">Hours</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-m">--</div>
+          <div class="countdown-label">Min</div>
+        </div>
+        <div class="countdown-sep">:</div>
+        <div class="countdown-unit">
+          <div class="countdown-num" id="cd-s">--</div>
+          <div class="countdown-label">Sec</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="text-sub" style="margin-top:0;">Be useful or turn to dust</div>
+  </div>
+  <div class="bottom-whisper">still moving</div>
+</div>
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('hidden');
+  }, 800);
+});
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.25 });
+sections.forEach(s => observer.observe(s));
+const scrollInd = document.getElementById('scrollIndicator');
+let scrolledOnce = false;
+window.addEventListener('scroll', () => {
+  if (!scrolledOnce && window.scrollY > 80) {
+    scrolledOnce = true;
+    scrollInd.classList.add('hidden');
+  }
+}, { passive: true });
+const progressBar = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = pct + '%';
+}, { passive: true });
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const img = section.querySelector('.section-bg img');
+        if (img && rect.top < window.innerHeight && rect.bottom > 0) {
+          const offset = (rect.top / window.innerHeight) * -30;
+          img.style.transform = `scale(1.08) translateY(${offset}px)`;
+        }
+      });
+      ticking = false;
+    });
+    ticking = true;
+  }
+}, { passive: true });
+const LAUNCH = new Date('2026-04-01T15:00:00Z').getTime();
+function updateCD() {
+  const diff = Math.max(0, LAUNCH - Date.now());
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  if (diff <= 0) {
+    document.querySelector('.countdown-wrap').innerHTML = '<div class="text-main" style="opacity:1;transform:none;">From dust.</div>';
+  }
+}
+updateCD();
+setInterval(updateCD, 1000);
+const canvas = document.getElementById('dust-canvas');
+const ctx = canvas.getContext('2d');
+let cw, ch;
+function resizeCanvas() {
+  cw = canvas.width = window.innerWidth;
+  ch = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+const particles = [];
+const PCOUNT = Math.min(60, Math.floor((window.innerWidth * window.innerHeight) / 20000));
+class Dust {
+  constructor(init) {
+    this.spawn(init);
+  }
+  spawn(init) {
+    this.x = Math.random() * cw;
+    this.y = init ? Math.random() * ch : ch + 20;
+    this.r = Math.random() * 1.6 + 0.3;
+    this.vy = -(Math.random() * 0.3 + 0.06);
+    this.vx = (Math.random() - 0.5) * 0.12;
+    this.life = 0;
+    this.maxLife = Math.random() * 700 + 300;
+    this.maxAlpha = Math.random() * 0.35 + 0.04;
+    this.alpha = 0;
+    const v = Math.random();
+    this.rgb = v < 0.55 ? '201,168,76' : v < 0.8 ? '175,145,60' : '225,195,105';
+  }
+  update() {
+    this.life++;
+    this.y += this.vy;
+    this.x += this.vx;
+    this.vx += (Math.random() - 0.5) * 0.008;
+    if (this.life < 80) this.alpha = (this.life / 80) * this.maxAlpha;
+    else if (this.life > this.maxLife - 100) this.alpha = ((this.maxLife - this.life) / 100) * this.maxAlpha;
+    else this.alpha = this.maxAlpha;
+    const dx = this.x - mx, dy = this.y - my;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < 100 && dist > 0) {
+      const f = (100 - dist) / 100 * 0.25;
+      this.x += (dx/dist) * f;
+      this.y += (dy/dist) * f;
+    }
+    if (this.life >= this.maxLife || this.y < -30) this.spawn(false);
+  }
+  draw() {
+    if (this.alpha <= 0.001) return;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${this.rgb},${this.alpha})`;
+    ctx.fill();
+    if (this.r > 1) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r*3, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${this.rgb},${this.alpha*0.06})`;
+      ctx.fill();
+    }
+  }
+}
+for (let i = 0; i < PCOUNT; i++) particles.push(new Dust(true));
+let mx = -999, my = -999;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+document.addEventListener('touchstart', () => { mx = -999; my = -999; }, { passive: true });
+(function loop() {
+  ctx.clearRect(0, 0, cw, ch);
+  for (const p of particles) { p.update(); p.draw(); }
+  requestAnimationFrame(loop);
+})();
+document.addEventListener('contextmenu', e => e.preventDefault());
+</script>
+</body>
+</html>
