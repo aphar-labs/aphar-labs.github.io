@@ -139,10 +139,10 @@ body {
 
 /* ===== SCROLL ANIMATIONS ===== */
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0.06;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .reveal.visible {
@@ -299,7 +299,7 @@ body {
 .chapter {
   max-width: 720px;
   margin: 0 auto;
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   position: relative;
   z-index: 1;
 }
@@ -308,13 +308,13 @@ body {
 .chapter-header {
   width: 100vw;
   margin-left: calc(-50vw + 50%);
-  min-height: 55vh;
+  min-height: 45vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   z-index: 1;
 }
 
@@ -565,6 +565,34 @@ p {
   margin-top: 0.5rem;
 }
 
+.closing .signature .links a:hover {
+  color: var(--gold);
+}
+
+/* ===== PULL QUOTE ===== */
+.pull-quote {
+  text-align: center;
+  padding: 3rem 1rem;
+  margin: 2.5rem 0;
+  position: relative;
+}
+
+.pull-quote p {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 580px;
+  margin: 0 auto;
+  text-shadow: 0 0 25px rgba(196, 150, 60, 0.12);
+}
+
+@media (max-width: 768px) {
+  .pull-quote p { font-size: 1.2rem; }
+}
+
 /* ===== INLINE IMAGE ===== */
 .inline-img {
   width: 100vw;
@@ -650,7 +678,7 @@ p {
   body { font-size: 17px; }
   .toc-nav { display: none; }
   .chapter > p:first-of-type::first-letter { font-size: 3em; }
-  .chapter { padding: 4rem 1.5rem; }
+  .chapter { padding: 3rem 1.5rem; }
   .cover .hebrew { font-size: 1.4rem; }
 }
 
@@ -695,7 +723,9 @@ p {
     <div class="tagline">The Economic Argument for Human Existence in the Age of AI</div>
     <div class="author" style="font-family:'Arial',sans-serif;">Written by 0xAphar &mdash; March 2026</div>
   </div>
-  <div class="scroll-indicator"><div class="arrow"></div></div>
+  <div class="scroll-indicator"><div class="arrow"></div>
+<div class="pull-quote reveal"><p>You were here. You were unique. Now prove you are still moving.</p></div>
+</div>
 </section>
 
 <!-- PROLOGUE -->
@@ -781,6 +811,8 @@ p {
   <p>HODL told you to sit still. MOEV tells you to prove you are alive.</p>
   <p>HODL was born from a typo by a man who had given up on making decisions. MOEV is born from a conviction that the only decisions that matter are the ones you make every single day. Not once. Not at the moment of purchase. Every day.</p>
   <p>MOEV is not a trading strategy. It is a life philosophy encoded into a currency. The hand that grips the coin turns to stone. The hand that moves stays alive. The idle fund the active. The dead fund the living.</p>
+
+<div class="pull-quote reveal"><p>The idle fund the active. The dead fund the living.</p></div>
   <div class="quote"><p>Bitcoin proved that money does not need a government. DUST proves that humans do not need permission to matter.</p></div>
 </div>
 
@@ -887,6 +919,8 @@ p {
   <p>Communities that cannot access clean water get water. Communities that cannot access energy get energy. Communities that cannot access shelter get shelter. Not through charity. Through participation in an economy that owns the resources and distributes access to the people who prove daily that they are alive and contributing.</p>
   <p>An economy built on proof of life refuses to let life go without water.</p>
 
+<div class="pull-quote reveal"><p>What begins as a token evolves into a currency backed by the things that keep humans alive.</p></div>
+
   <div class="divider"></div>
 
   <h2>The Decentralized Sovereign Wealth Fund</h2>
@@ -972,7 +1006,7 @@ p {
 
     <div class="signature">
       <div class="name">&mdash; 0xAphar</div>
-      <div class="links">aphar.io &nbsp;&bull;&nbsp; @0xAphar</div>
+      <div class="links"><a href="https://aphar.io" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">aphar.io</a> &nbsp;&bull;&nbsp; <a href="https://x.com/0xAphar" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">@0xAphar</a></div>
     </div>
   </div>
 </section>
@@ -1128,7 +1162,7 @@ p {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
