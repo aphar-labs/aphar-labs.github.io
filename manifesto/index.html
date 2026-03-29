@@ -1365,42 +1365,47 @@ p {
 </script>
 
 
+<audio id="arena-audio" preload="auto" src="man-in-the-arena.mp3"></audio>
 <script>
 (function() {
-  const speechText = "It is not the critic who counts; not the man who points out how the strong man stumbles, or where the doer of deeds could have done them better. The credit belongs to the man who is actually in the arena, whose face is marred by dust and sweat and blood; who strives valiantly; who errs, who comes short again and again, because there is no effort without error and shortcoming; but who does actually strive to do the deeds; who knows great enthusiasms, the great devotions; who spends himself in a worthy cause; who at the best knows in the end the triumph of high achievement, and who at the worst, if he fails, at least fails while daring greatly, so that his place shall never be with those cold and timid souls who neither know victory nor defeat.";
-  
-  const btn = document.getElementById('arena-play-btn');
-  const icon = document.getElementById('arena-play-icon');
-  const pulse = document.getElementById('arena-pulse');
-  let utterance = null;
-  let isPlaying = false;
+  var audio = document.getElementById('arena-audio');
+  var btn = document.getElementById('arena-play-btn');
+  var icon = document.getElementById('arena-play-icon');
+  var pulse = document.getElementById('arena-pulse');
+  var isPlaying = false;
 
   btn.addEventListener('click', function() {
     if (isPlaying) {
-      speechSynthesis.cancel();
+      audio.pause();
+      audio.currentTime = 0;
       isPlaying = false;
-      icon.textContent = '\u25B6';
+      icon.innerHTML = '\u25B6';
+      icon.style.marginLeft = '3px';
+      icon.style.fontSize = '22px';
+      icon.style.letterSpacing = '0';
       pulse.style.display = 'none';
       btn.classList.remove('playing');
       return;
     }
-    utterance = new SpeechSynthesisUtterance(speechText);
-    utterance.rate = 0.85;
-    utterance.pitch = 0.9;
-    const voices = speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.name.includes('Daniel') || v.name.includes('Google UK English Male') || v.name.includes('Male'));
-    if (preferred) utterance.voice = preferred;
-    utterance.onend = function() {
-      isPlaying = false;
-      icon.textContent = '\u25B6';
-      pulse.style.display = 'none';
-      btn.classList.remove('playing');
-    };
-    speechSynthesis.speak(utterance);
+    audio.currentTime = 0;
+    audio.play();
     isPlaying = true;
-    icon.textContent = '\u275A\u275A';
+    icon.innerHTML = '\u275A\u275A';
+    icon.style.marginLeft = '0';
+    icon.style.fontSize = '16px';
+    icon.style.letterSpacing = '2px';
     pulse.style.display = 'block';
     btn.classList.add('playing');
+  });
+
+  audio.addEventListener('ended', function() {
+    isPlaying = false;
+    icon.innerHTML = '\u25B6';
+    icon.style.marginLeft = '3px';
+    icon.style.fontSize = '22px';
+    icon.style.letterSpacing = '0';
+    pulse.style.display = 'none';
+    btn.classList.remove('playing');
   });
 })();
 </script>
