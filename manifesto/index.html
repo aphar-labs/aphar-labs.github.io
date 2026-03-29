@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="The Economic Argument for Human Existence in the Age of AI. A manifesto by 0xAphar.">
+<meta name="author" content="0xAphar">
+<meta name="theme-color" content="#0A0A0A">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="$DUST — The Manifesto">
+<meta property="og:description" content="The Economic Argument for Human Existence in the Age of AI. Proof of Life.">
+<meta property="og:image" content="https://aphar.io/manifesto/img/prologue.jpg">
+<meta property="og:url" content="https://aphar.io/manifesto">
+<meta property="og:site_name" content="$DUST">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="$DUST — The Manifesto">
+<meta name="twitter:description" content="The Economic Argument for Human Existence in the Age of AI. Proof of Life.">
+<meta name="twitter:image" content="https://aphar.io/manifesto/img/prologue.jpg">
+<meta name="twitter:creator" content="@0xAphar">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://aphar.io/manifesto">
+
+<!-- Favicon (inline SVG as data URI — gold $ on dark bg) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230A0A0A'/%3E%3Ctext x='16' y='24' font-family='serif' font-size='24' font-weight='bold' fill='%23C4963C' text-anchor='middle'%3E%24%3C/text%3E%3C/svg%3E">
+
+<title>$DUST — The Manifesto</title>
+
+<link rel="preload" href="img/prologue.jpg" as="image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #C4963C;
+  --gold-light: #D4A84E;
+  --gold-glow: rgba(196, 150, 60, 0.4);
+  --dark: #0A0A0A;
+  --darker: #050505;
+  --text: #D4CBC0;
+  --text-dim: #8A8078;
+  --accent-border: rgba(196, 150, 60, 0.3);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--darker);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ===== PARTICLE CANVAS ===== */
+#dust-particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* ===== READING PROGRESS BAR ===== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  z-index: 1000;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px var(--gold-glow), 0 0 20px rgba(196, 150, 60, 0.15);
+}
+
+/* ===== FLOATING TOC NAV ===== */
+.toc-nav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.toc-nav.visible { opacity: 1; }
+
+.toc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-dim);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.toc-dot:hover,
+.toc-dot.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold-glow);
+  transform: scale(1.3);
+}
+
+.toc-dot .toc-label {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+.toc-dot:hover .toc-label { opacity: 1; }
+
+/* ===== SCROLL ANIMATIONS ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+.reveal-delay-4 { transition-delay: 0.6s; }
+.reveal-delay-5 { transition-delay: 0.75s; }
+
+/* ===== COVER ===== */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(196, 150, 60, 0.06) 0%, transparent 60%);
+  animation: coverPulse 6s ease-in-out infinite;
+}
+
+@keyframes coverPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.cover-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cover .hebrew {
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 0.3s forwards;
+  text-shadow: 0 0 30px var(--gold-glow);
+}
+
+.cover .translation {
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 1rem;
+  margin-bottom: 3rem;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 0.6s forwards;
+}
+
+.cover .title {
+  font-family: 'Cinzel', serif;
+  font-size: 7rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: titleReveal 1.8s ease 0.9s forwards;
+}
+
+@keyframes titleReveal {
+  0% { opacity: 0; transform: scale(0.9); letter-spacing: 0.5em; text-shadow: 0 0 0px transparent; }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: scale(1); letter-spacing: 0.15em; text-shadow: 0 0 60px rgba(196,150,60,0.4), 0 0 120px rgba(196,150,60,0.15); }
+}
+
+/* Breathing glow on title after reveal */
+.cover .title {
+  animation: titleReveal 1.8s ease 0.9s forwards, titleGlow 4s ease-in-out 2.7s infinite;
+}
+
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 60px rgba(196,150,60,0.3), 0 0 120px rgba(196,150,60,0.1); }
+  50% { text-shadow: 0 0 80px rgba(196,150,60,0.5), 0 0 160px rgba(196,150,60,0.2), 0 0 200px rgba(196,150,60,0.08); }
+}
+
+.cover .subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 1.5s forwards;
+}
+
+.cover .tagline {
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  margin-bottom: 4rem;
+  max-width: 500px;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 1.8s forwards;
+}
+
+.cover .author {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 2.1s forwards;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: fadeInUp 1.2s ease 2.5s forwards;
+  z-index: 2;
+}
+
+.scroll-indicator .arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 1.5px solid var(--gold);
+  border-bottom: 1.5px solid var(--gold);
+  transform: rotate(45deg);
+  animation: scrollBounce 2s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.3; }
+  50% { transform: rotate(45deg) translateY(8px); opacity: 0.7; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CHAPTER SECTIONS ===== */
+.chapter {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== CHAPTER HEADERS WITH PARALLAX ===== */
+.chapter-header {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  z-index: 1;
+}
+
+.chapter-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(5,5,5,0.3) 0%, rgba(5,5,5,0.6) 50%, var(--darker) 100%);
+  z-index: 1;
+}
+
+.chapter-header img {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  opacity: 0.65;
+  will-change: transform;
+  transition: transform 0.05s linear;
+}
+
+.chapter-header-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.chapter-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
+}
+
+.chapter-header.in-view .chapter-label,
+.chapter-header-noimg.in-view .chapter-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chapter-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 40px rgba(196, 150, 60, 0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 0.2s;
+}
+
+.chapter-header.in-view .chapter-title,
+.chapter-header-noimg.in-view .chapter-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== DROP CAPS ===== */
+.chapter > p:first-of-type::first-letter {
+  font-family: 'Cinzel', serif;
+  font-size: 3.6em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 0.12em;
+  margin-top: 0.08em;
+  padding-right: 0.05em;
+  color: var(--gold);
+  text-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* ===== HEADINGS ===== */
+h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 3rem 0 1.5rem 0;
+  letter-spacing: 0.05em;
+}
+
+h2::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-top: 0.8rem;
+  transition: width 0.8s ease;
+}
+
+h2.visible::after {
+  width: 80px;
+}
+
+p {
+  margin-bottom: 1.4rem;
+  color: var(--text);
+}
+
+/* ===== QUOTES ===== */
+.quote {
+  border-left: 3px solid var(--gold);
+  padding: 1.5rem 2rem;
+  margin: 2.5rem 0;
+  background: rgba(196, 150, 60, 0.04);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.quote::before {
+  content: 'C';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 5rem;
+  color: rgba(196, 150, 60, 0.08);
+  line-height: 1;
+}
+
+.quote:hover {
+  background: rgba(196, 150, 60, 0.07);
+  border-left-color: var(--gold-light);
+}
+
+.quote p {
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ===== FULL QUOTE PAGE ===== */
+.quote-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-page p {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--gold);
+  max-width: 600px;
+  line-height: 1.5;
+  font-style: italic;
+  text-shadow: 0 0 30px rgba(196, 150, 60, 0.15);
+}
+
+/* ===== DIVIDER ===== */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent-border), transparent);
+  margin: 4rem 0;
+  position: relative;
+}
+
+.divider::after {
+  content: 'º6';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--gold);
+  font-size: 0.8rem;
+  background: var(--darker);
+  padding: 0 1rem;
+  opacity: 0.5;
+}
+
+/* ===== CLOSING ===== */
+.closing {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center bottom, rgba(196, 150, 60, 0.08) 0%, transparent 60%);
+}
+
+.closing-content {
+  position: relative;
+  z-index: 2;
+}
+
+.closing .questions {
+  margin-bottom: 3rem;
+}
+
+.closing .questions p {
+  font-family: 'Cinzel', serif;
+  font-size: 1.4rem;
+  color: var(--gold);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(196, 150, 60, 0.15);
+}
+
+.closing .taglines p {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+
+.closing .signature {
+  margin-top: 3rem;
+}
+
+.closing .signature .name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  color: var(--gold);
+  font-style: italic;
+}
+
+.closing .signature .links {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* ===== INLINE IMAGE ===== */
+.inline-img {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: 60vh;
+  overflow: hidden;
+  position: relative;
+  margin: 3rem 0;
+  z-index: 1;
+}
+
+.inline-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--darker) 0%, transparent 15%, transparent 85%, var(--darker) 100%);
+  z-index: 1;
+}
+
+.inline-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+/* ===== NO-IMAGE CHAPTER HEADER (fallback, shouldn't be used now) ===== */
+.chapter-header-noimg {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  min-height: 35vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, rgba(196, 150, 60, 0.06) 0%, var(--darker) 50%, rgba(196, 150, 60, 0.03) 100%);
+  border-top: 1px solid rgba(196, 150, 60, 0.15);
+  border-bottom: 1px solid rgba(196, 150, 60, 0.15);
+  z-index: 1;
+}
+
+/* ===== FADE TO BLACK AT END ===== */
+.fade-out-end {
+  height: 30vh;
+  background: linear-gradient(to bottom, transparent 0%, var(--darker) 100%);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== GOLD HOVER GLOW ON KEY TEXT ===== */
+.closing .questions p {
+  transition: text-shadow 0.4s ease, transform 0.4s ease;
+  cursor: default;
+}
+
+.closing .questions p:hover {
+  text-shadow: 0 0 30px rgba(196, 150, 60, 0.4), 0 0 60px rgba(196, 150, 60, 0.15);
+  transform: scale(1.02);
+}
+
+.closing .taglines p {
+  transition: color 0.4s ease;
+}
+
+.closing .taglines p:hover {
+  color: var(--gold);
+}
+
+/* ===== SELECTION COLOR ===== */
+::selection {
+  background: rgba(196, 150, 60, 0.3);
+  color: #fff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .cover .title { font-size: 3.5rem; }
+  .cover .subtitle { font-size: 1rem; letter-spacing: 0.3em; }
+  .chapter-title { font-size: 2rem; }
+  .quote-page p { font-size: 1.4rem; }
+  body { font-size: 17px; }
+  .toc-nav { display: none; }
+  .chapter > p:first-of-type::first-letter { font-size: 3em; }
+  .chapter { padding: 4rem 1.5rem; }
+  .cover .hebrew { font-size: 1.4rem; }
+}
+
+@media (max-width: 480px) {
+  .cover .title { font-size: 2.8rem; letter-spacing: 0.08em; }
+  .chapter-title { font-size: 1.6rem; }
+  .chapter > p:first-of-type::first-letter { font-size: 2.6em; }
+}
+
+@media print {
+  .chapter-header { min-height: auto; page-break-before: always; }
+  body { background: white; color: #1a1a1a; }
+  #dust-particles, .progress-bar, .toc-nav, .scroll-indicator, .fade-out-end { display: none; }
+}
+
+</style>
+</head>
+<body>
+<canvas id="dust-particles"></canvas>
+<div class="progress-bar"></div>
+
+<nav class="toc-nav">
+  <div class="toc-dot" data-target="#prologue"><span class="toc-label">Prologue</span></div>
+  <div class="toc-dot" data-target="#ch1"><span class="toc-label">The Problem</span></div>
+  <div class="toc-dot" data-target="#ch2"><span class="toc-label">The Thesis</span></div>
+  <div class="toc-dot" data-target="#ch3"><span class="toc-label">The Architecture</span></div>
+  <div class="toc-dot" data-target="#ch4"><span class="toc-label">The Platform</span></div>
+  <div class="toc-dot" data-target="#ch5"><span class="toc-label">The Movement</span></div>
+  <div class="toc-dot" data-target="#ch6"><span class="toc-label">The Treasury</span></div>
+  <div class="toc-dot" data-target="#ch7"><span class="toc-label">The Civilization</span></div>
+  <div class="toc-dot" data-target="#ch8"><span class="toc-label">The Endgame</span></div>
+</nav>
+
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-content">
+    <div class="hebrew">&#x05DB;&#x05B4;&#x05BC;&#x05D9;&#x05BE;&#x05E2;&#x05B8;&#x05E4;&#x05B8;&#x05E8; &#x05D0;&#x05B7;&#x05EA;&#x05B8;&#x05BC;&#x05D4; &#x05D5;&#x05B0;&#x05D0;&#x05B6;&#x05DC;&#x05BE;&#x05E2;&#x05B8;&#x05E4;&#x05B8;&#x05E8; &#x05EA;&#x05B8;&#x05BC;&#x05E9;&#x05C1;&#x05D5;&#x05BC;&#x05D1;</div>
+    <div class="translation">For you are dust, and to dust you shall return.</div>
+    <div class="title">$DUST</div>
+    <div class="subtitle">The Manifesto</div>
+    <div class="tagline">The Economic Argument for Human Existence in the Age of AI</div>
+    <div class="author" style="font-family:'Arial',sans-serif;">Written by 0xAphar &mdash; March 2026</div>
+  </div>
+  <div class="scroll-indicator"><div class="arrow"></div></div>
+</section>
+
+<!-- PROLOGUE -->
+<div class="chapter-header" id="prologue">
+  <img src="img/prologue.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Prologue</div>
+    <div class="chapter-title">The Question</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <p>In 1932, a small Austrian town called W&ouml;rgl was dying. Unemployment had reached 30%. The economy had stopped moving. Money existed but nobody spent it. Everyone held what they had and waited for someone else to act first.</p>
+  <p>The mayor, Michael Unterguggenberger, had an idea that most people thought was insane. He printed new money. But this money had a rule that no currency had ever carried before: it expired. Every month, the bills lost value. If you held a note without spending it, it decayed. You had to buy a stamp to restore its value.</p>
+  <p>The result was immediate and staggering. People spent money. They hired workers. They built infrastructure. Unemployment dropped dramatically in a single year while the rest of Austria continued to collapse. The town came alive because the currency demanded movement.</p>
+  <p>The Austrian central bank shut it down within 13 months. The experiment was declared illegal. The town returned to poverty.</p>
+  <p>Ninety-four years later, the same problem exists at a civilizational scale. But now the threat is not economic depression. The threat is human irrelevance.</p>
+</div>
+
+<div class="quote-page">
+  <p>What happens when doing nothing is no longer enough?</p>
+</div>
+
+<!-- CHAPTER 1 -->
+<div class="chapter-header" id="ch1">
+  <img loading="lazy" src="img/ch1-problem.jpg" style="opacity:0.95 !important;filter:brightness(1.5);" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter One</div>
+    <div class="chapter-title">The Problem</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>The Age of Idle Capital</h2>
+  <p>The modern financial system rewards one behavior above all others: doing nothing. Buy an asset. Hold it. Wait. Let other people create the value that makes your position worth more. This is the dominant economic philosophy of our time. It has a name. They call it HODL.</p>
+  <p>HODL began as a typo from a drunk Bitcoin trader in 2013. It became the defining philosophy of an entire generation of investors. Hold on for dear life. Do not sell. Do not spend. Do not move. Sit still and let the number go up.</p>
+  <p>This philosophy created extraordinary wealth for early adopters. It also created an economy of statues. Millions of people sitting motionless, watching screens, waiting for someone else to do something that makes their portfolio turn green. No creation. No circulation. No proof that anyone behind the wallet is even alive.</p>
+
+  <h2>The AI Convergence</h2>
+  <p>While humans perfected the art of sitting still, artificial intelligence perfected the art of doing everything else. AI now writes, codes, designs, trades, composes, diagnoses, and creates at a speed and scale that no human can match.</p>
+  <p>Industry leaders now predict that the vast majority of all onchain transactions will be driven by agents, bots, and automated systems within years. AI will exceed human intelligence. Infrastructure demand will displace white-collar workers en masse.</p>
+  <p>None of them are asking the follow-up question: what do the humans do after that?</p>
+  <p>If AI handles the transactions, manages the portfolios, writes the contracts, and executes the trades, what economic function remains that requires proof a human being is on the other end?</p>
+  <div class="quote"><p>The nightmare is not AI getting smarter. The nightmare is humans having no reason to stay relevant.</p></div>
+
+  <h2>The Death of Every Token</h2>
+  <p>Every cryptocurrency ever created decays. This is not a design flaw. It is an inevitability. Communities lose interest. Developers move on. Volume dries up. The token that promised forever quietly approaches zero while the remaining holders refuse to acknowledge what is already obvious.</p>
+  <p>Tens of millions of tokens have launched. The vast majority are dead. Not because they were poorly designed but because they had no mechanism to sustain human participation beyond speculation. Once the speculative energy fades, there is nothing left to keep people showing up.</p>
+  <p>The honest truth that no project will tell you: your token is already decaying. The only question is whether anyone told you first.</p>
+</div>
+
+<!-- CHAPTER 2 -->
+<div class="chapter-header" id="ch2">
+  <img loading="lazy" src="img/ch2-thesis.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Two</div>
+    <div class="chapter-title">The Thesis</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>Proof of Life</h2>
+  <p>DUST begins with a single premise: what if a currency was honest about decay?</p>
+  <p>Instead of pretending your tokens last forever, DUST tells you the truth from the moment you enter. Your balance decays every day. It does not matter how much you hold. It does not matter when you bought. Time treats everyone the same. The clock is always running.</p>
+  <p>The only way to pause the decay is to prove you are still alive. Not by clicking a button. Not by solving a captcha. By showing the world that you woke up today and did something that mattered. You learned something. You built something. You helped someone. You moved your life forward in a way that no machine can fake and no algorithm can replicate.</p>
+  <p>The platform captures this proof. But the platform is not the point. The point is a generation of humans who stop scrolling, stop spectating, stop waiting for someone else to create the value they benefit from, and start living with intention every single day. DUST does not reward activity on an app. It rewards proof that you are becoming a better version of yourself and contributing to a better humanity.</p>
+  <p>This is not a gimmick. This is not gamification. This is the fundamental economic insight that W&ouml;rgl proved in 1932 and that every civilization before us understood: value comes from movement, not storage.</p>
+
+  <div class="divider"></div>
+
+  <h2>The Ancient Truth</h2>
+  <p>Genesis 3:19 says it plainly: For you are dust, and to dust you shall return.</p>
+  <p>This is not a threat. It is a description of reality. Everything decays. Everything returns to its origin. The human body, the empires we build, the currencies we create. Entropy is not a punishment. It is the natural state of all things that stop moving.</p>
+  <p>The Book of Enoch describes hollow places inside a mountain where the spirits of the dead wait. Inactive. Unmoving. Stored but not alive. Separated into light and darkness based on how they lived. The ones who moved and created and served are held in golden light. The ones who sat idle wait in shadow.</p>
+  <p>Ecclesiastes 3:20 echoes it: All go to one place. All are from the dust, and to dust all return.</p>
+  <p>Proverbs 14:23 makes the economic case: In all toil there is profit, but mere talk leads only to poverty.</p>
+  <p>James 2:17 delivers the verdict: Faith without works is dead.</p>
+  <p>DUST does not impose an artificial mechanic. It encodes a truth that already exists in scripture, in nature, in physics, and in every economy that has ever functioned. Movement creates value. Stillness creates decay. This is not philosophy. This is tokenomics derived from the oldest source code in human history.</p>
+
+  <div class="divider"></div>
+
+  <h2>MOEV: The New Covenant</h2>
+  <p>HODL told you to sit still. MOEV tells you to prove you are alive.</p>
+  <p>HODL was born from a typo by a man who had given up on making decisions. MOEV is born from a conviction that the only decisions that matter are the ones you make every single day. Not once. Not at the moment of purchase. Every day.</p>
+  <p>MOEV is not a trading strategy. It is a life philosophy encoded into a currency. The hand that grips the coin turns to stone. The hand that moves stays alive. The idle fund the active. The dead fund the living.</p>
+  <div class="quote"><p>Bitcoin proved that money does not need a government. DUST proves that humans do not need permission to matter.</p></div>
+</div>
+
+<!-- HANDS IMAGE -->
+<div class="inline-img">
+  <img loading="lazy" src="img/moev-hands.jpg" alt="">
+</div>
+
+<!-- CHAPTER 3 -->
+<div class="chapter-header" id="ch3">
+  <img loading="lazy" src="img/ch3-architecture.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Three</div>
+    <div class="chapter-title">The Architecture</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>Phase 1: The Meme</h2>
+  <p>DUST launches on Solana as a standard memecoin. No tax. No complex mechanics. Pure meme. The narrative and community carry this phase.</p>
+  <p>This is intentional. The meme is the trojan horse. People discover DUST the same way they discover any memecoin: through curiosity, humor, and the promise of something interesting. They ape in. They share it. They meme it.</p>
+  <p>Then they read the pinned thread. They find the W&ouml;rgl story. They find Genesis 3:19. They realize this is not a joke. Hour one it looks like a meme. Hour two they understand it could change the world.</p>
+
+  <h2>Phase 2: The Economy</h2>
+  <p>Phase 2 is not a new token. It is a staking protocol built on top of the same Phase 1 token. No migration. No new token. No split liquidity. One token. Two phases.</p>
+  <p>Users deposit their Phase 1 tokens into the DUST Protocol. This creates their account on the social platform. The decay clock begins.</p>
+  <p>Every day, your balance decays. The rate adjusts dynamically as the network grows, becoming more sustainable as more humans join the ecosystem.</p>
+  <p>Decayed tokens do not disappear. They flow into the Dust Pool, where they are redistributed to active participants and partially burned permanently. The idle fund the active. The protocol remains deflationary over time.</p>
+
+  <h2>The Dust Pool</h2>
+  <p>The Dust Pool is the engine of the entire economy. Every token that decays from an inactive wallet flows into this pool. From there it is distributed across multiple channels: rewarding daily task completion, incentivizing the most active participants, funding the humans who verify other humans, supporting governance and community initiatives, and sustaining protocol development.</p>
+  <p>This creates a self-sustaining economic loop. The lazy fund the active. Activity generates decay from others. Decay funds more activity. The cycle continues as long as humans keep showing up.</p>
+
+  <h2>The Dust Scroll</h2>
+  <p>Each day, after completing all daily tasks, holders unlock the Dust Scroll: a scripture-based reflection prompt drawn from ancient texts such as Genesis, Ecclesiastes, Proverbs, James, Enoch, and Jubilees.</p>
+  <p>The Dust Scroll is not religious instruction. It is ancient wisdom reframed as a daily practice. Each prompt asks one question: what did you do today that proves you are still alive?</p>
+  <p>Faith without works is dead. Tokens without movement return to dust. Same principle. Same source code.</p>
+</div>
+
+<!-- CHAPTER 4 -->
+<div class="chapter-header" id="ch4">
+  <img loading="lazy" src="img/ch4-scroll.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Four</div>
+    <div class="chapter-title">The Platform</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>Proof of Life as Social Infrastructure</h2>
+  <p>The DUST social platform is not a feature bolted onto a token. The token IS the platform. Depositing tokens creates your account. Withdrawing tokens deletes it. Your identity, your score, your history, your reputation are all tied to your continued presence in the ecosystem.</p>
+  <p>The platform combines the best elements of every major social network into a single, token-gated ecosystem. Customizable profiles. A feed driven by activity scores. Threaded discussions. Proof of life content. Long-form creation funded by the pool. On-chain work history. Payments and tipping. A task marketplace connecting people who need work done with people who do work.</p>
+  <p>Every interaction on the platform is economic. Posting costs nothing but attention. Voting costs tokens. Tipping resets decay for both the sender and receiver, encouraging circulation. The platform does not extract from users. It rewards the ones who keep the ecosystem alive.</p>
+
+  <h2>The Dust Score</h2>
+  <p>Every participant has a Dust Score publicly visible on their profile. The score measures one thing: how consistently you show up. Complete your daily tasks. Maintain your streaks. Tip others. Verify other humans. Your score rises. Stop moving. Your score falls.</p>
+  <p>The Dust Score cannot be bought. It cannot be faked by a bot over time because the tasks require genuine human engagement verified by other humans. It is the purest measure of sustained human activity ever created.</p>
+  <p>A person in rural Kenya and a person in Manhattan have the same daily tasks. The same decay clock. The same opportunity to build their score. Geography, wealth, and connections are irrelevant. The only thing that matters is whether you showed up today.</p>
+
+  <h2>The Dissolving Fingerprint</h2>
+  <p>The visual identity of DUST is a fingerprint that dissolves into particles. The fingerprint is the original proof of life. It is the one thing that proves you are a unique human being. No AI has one. No bot has one.</p>
+  <p>A dissolving fingerprint says everything DUST stands for: you were here, you are unique, but time is taking you unless you keep moving. It appears across the ecosystem, on merchandise, and in the physical world. When people see it, they know what it means. Still moving.</p>
+</div>
+
+<!-- CHAPTER 5 -->
+<div class="chapter-header" id="ch5">
+  <img loading="lazy" src="img/ch5-fingerprint.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Five</div>
+    <div class="chapter-title">The Movement</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>Culture, Not Marketing</h2>
+  <p>DUST does not have a marketing strategy. It has a culture. Holders are not holders. They are movers. The greeting is not gm. It is still moving. The philosophy is not HODL. It is MOEV. The enemy is not another token. The enemy is irrelevance.</p>
+  <p>Every day, movers post what they did. Not what they bought. Not what they are holding. What they did. What they learned. What they built. Who they helped. How they moved their life forward. The daily ritual is not engagement farming. It is a public commitment to becoming a better human being. The community holds each other accountable not to a price target but to a standard of living that demands growth, contribution, and purpose.</p>
+  <p>A mover who learned a new skill today posts about it. A mover who helped a neighbor posts about it. A mover who started a business, finished a project, taught a child, planted a garden, repaired a machine, created something from nothing posts about it. This is what proof of life looks like. Not a click. A life being lived on purpose.</p>
+  <p>This culture cannot be replicated by a fork. You can copy the code. You cannot copy the daily commitment of thousands of humans proving they are alive. That is the moat. Not technology. Not tokenomics. Human effort sustained over time.</p>
+
+  <h2>The Genesis</h2>
+  <p>DUST launches with a test. Multiple tokens deploy simultaneously. The majority are decoys. One is real. Its identity is hidden in the pre-launch content for those who paid attention.</p>
+  <p>This is the first proof of life test. Bots will spread their capital across worthless tokens. Humans who did the research, read the posts, and paid attention will find the real one. From the very first second, DUST rewards the humans who show up and punishes the machines that try to game the system.</p>
+  <p>Culture builds the community. But a community needs more than culture to survive.</p>
+</div>
+
+<!-- CHAPTER 6 -->
+<div class="chapter-header" id="ch6">
+<img loading="lazy" src="img/ch6-treasury.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Six</div>
+    <div class="chapter-title">The Sovereign Treasury</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>From Digital Currency to Real Currency</h2>
+  <p>Every currency in history has faced the same question: what backs it? Gold backed the dollar. Military power backs the reserve currency. Speculation backs every cryptocurrency that exists today.</p>
+  <p>DUST answers this question differently. DUST will be backed by the resources humans need to survive.</p>
+
+  <h2>The Vision</h2>
+  <p>As the DUST economy grows, the DAO treasury begins acquiring real-world assets. Not digital assets. Not more tokens. Physical resources that humanity depends on. Water. Land. Energy. Shelter. Raw materials. The things that sustain human life regardless of what happens to markets, technology, or governments.</p>
+  <p>The scope of this vision is deliberately broad because the needs of humanity are broad. What begins as a digital economy evolves into a physical one. What begins as a token evolves into a currency backed by tangible resources. What begins on a blockchain eventually builds its own. Each phase unlocks the next. Each success funds the next acquisition. The movers decide what the treasury acquires through governance. The treasury serves the movers, not the other way around.</p>
+  <p>Communities that cannot access clean water get water. Communities that cannot access energy get energy. Communities that cannot access shelter get shelter. Not through charity. Through participation in an economy that owns the resources and distributes access to the people who prove daily that they are alive and contributing.</p>
+  <p>An economy built on proof of life refuses to let life go without water.</p>
+
+  <div class="divider"></div>
+
+  <h2>The Decentralized Sovereign Wealth Fund</h2>
+  <p>What emerges is something that has never existed before: a decentralized sovereign wealth fund owned not by a government but by the people who prove daily that they are alive and contributing.</p>
+  <p>Sovereign wealth funds exist today. They belong to nations. They serve political interests. They are controlled by the few for the benefit of the many, or sometimes the benefit of the few.</p>
+  <p>The DUST treasury belongs to no government. It belongs to the movers. The people who show up every day from every country on earth and prove they are still here. Their daily effort sustains the economy. The economy acquires the resources. The resources sustain the people. The cycle is self-reinforcing and no single authority can break it.</p>
+  <p>This is what W&ouml;rgl would have become if the central bank had not killed it. A self-sustaining economy backed by real assets, powered by human movement, owned by the people who refuse to sit still.</p>
+
+  <h2>Beyond the Digital World</h2>
+  <p>DUST does not stay on a screen. The economy extends into the physical world through the resources it owns, the products it creates, and the infrastructure it builds. People encounter DUST in their daily lives without ever opening a crypto wallet. They encounter it through the water they drink, the energy that powers their home, the land that grows their food.</p>
+  <p>This is how DUST reaches the billions of people who will never visit a cryptocurrency exchange. Not through ads. Not through influencers. Through the resources they already need to survive. The digital economy is the engine. The physical world is where it matters.</p>
+</div>
+
+<!-- CHAPTER 7 -->
+<div class="chapter-header" id="ch7">
+<img loading="lazy" src="img/ch7-civilization.jpg" alt="">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Seven</div>
+    <div class="chapter-title">The Parallel Civilization</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <p>Imagine a world where a community in East Africa coordinates labor, trades goods, and accesses clean water through an economy they own. No bank required. No government permission. Just a phone, an internet connection, and the willingness to show up every day.</p>
+
+  <p>Imagine a world where a person who has never had a bank account, never had a formal job, never had a credential recognized by any institution builds an onchain work history more trustworthy than any resume. Years of daily proof of life and completed tasks creating an identity that speaks for itself. Electricians, welders, designers, developers, translators, caretakers — earning and building reputation across borders, verified by the humans they served.</p>
+
+  <p>Imagine a world where governments participate in the same economy as their citizens. Not controlling it. Participating. Posting contracts. Paying workers. Staking alongside individuals. A currency that requires proof of life from everyone equally. Citizen and state.</p>
+
+  <p>Imagine a world where AI generates fake humans, fake voices, fake faces, and fake credentials — and the only thing that cannot be faked is sustained daily proof of life over months and years. The Dust Score becomes the most trusted identity on earth. Not a government ID. Not a biometric scan. A living record built by showing up, day after day, that no machine can replicate.</p>
+
+  <p>This is not a roadmap. This is an inevitability. Every economy that stops moving collapses. Every currency that stops circulating dies. Every civilization that forgets the value of human effort is replaced by one that remembers. DUST is the remembering.</p>
+
+  <p>Every Dust Score is a monument. Every completed task is an inscription on the wall of a cave that says: a human was here. A human moved. A human mattered.</p>
+
+  <div class="quote"><p>Bitcoin is the store of value for machines that never die. DUST is the proof of life for humans that must keep moving.</p></div>
+</div>
+
+<!-- CHAPTER 8 -->
+<div class="chapter-header" id="ch8">
+  <img loading="lazy" src="img/ch8-endgame.jpg" alt="" style="opacity:0.5;object-position:center top;">
+  <div class="chapter-header-text">
+    <div class="chapter-label">Chapter Eight</div>
+    <div class="chapter-title">The Endgame</div>
+  </div>
+</div>
+
+<div class="chapter">
+  <h2>The Evolution of Purpose</h2>
+  <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 1: The last economy that needs humans.</p>
+  <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 2: The proof that humans were here.</p>
+  <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 3: The reason humans stayed.</p>
+
+  <div class="divider"></div>
+
+  <p>DUST does not answer the question of why humans matter. It forces you to answer it yourself. Every single day. With action. Not with words. Not with holdings. Not with followers or credentials or titles. With movement.</p>
+  <p>The person who shows up every day will always outperform the person who bought early and sat still. That has never existed in crypto before. That has barely existed in any economy before.</p>
+  <p>People who feel they cannot move to the next level because something is in their way will find that DUST removes the gatekeepers. There is no application to fill out. No interview to pass. No network to build. There is only the question: will you show up today? Will you learn something today? Will you create something today? Will you help someone today? The economy does not care about your background. It cares about your movement.</p>
+  <p>DUST is not just an economy. It is a framework for human achievement. The daily practice of proving you are alive is also the daily practice of becoming someone worth being alive. Every task completed is a step forward. Every streak maintained is discipline built. Every tip sent is a relationship strengthened. Over time the movers do not just earn tokens. They earn skills, reputation, community, and purpose. The currency is the incentive. The life you build is the reward.</p>
+  <p>People who are not anti-AI but do not want it to consume the world will find their home here. DUST is not against technology. It is for humans. It runs parallel to AI, not against it. The human lane in an increasingly automated world.</p>
+  <p>The idle do not get punished. They fund the ones who give humanity a reason to keep going. This is not a penalty. This is natural law made visible.</p>
+</div>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="closing-content">
+    <p style="max-width:650px;margin:0 auto 3rem auto;text-align:center;">This is not a token. This is not a platform. This is the economic argument for human existence in the age of artificial intelligence. The meme is just the door. What is on the other side is a civilization layer that runs parallel to every government on earth, backed by real resources that humans need to survive, and asks one simple question every single day:</p>
+
+    <div class="questions">
+      <p>Are you still here?</p>
+      <p>Are you still moving?</p>
+      <p>Are you still useful?</p>
+    </div>
+
+    <div class="divider" style="max-width:200px;margin:2rem auto;"></div>
+
+    <div class="taglines">
+      <p>Be useful or turn to dust.</p>
+      <p>The last economy that needs humans.</p>
+      <p>Proof of Life.</p>
+      <p>Still MOEVing.</p>
+    </div>
+
+    <div class="signature">
+      <div class="name">&mdash; 0xAphar</div>
+      <div class="links">aphar.io &nbsp;&bull;&nbsp; @0xAphar</div>
+    </div>
+  </div>
+</section>
+
+<div class="fade-out-end"></div>
+
+
+<script>
+// ===== DUST PARTICLE SYSTEM =====
+(function() {
+  const canvas = document.getElementById('dust-particles');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let w, h;
+  let mouse = { x: -1000, y: -1000 };
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+
+  function createParticle(startRandom) {
+    return {
+      x: Math.random() * w,
+      y: startRandom ? Math.random() * h : h + Math.random() * 100,
+      size: Math.random() * 2 + 0.3,
+      speedX: (Math.random() - 0.5) * 0.3,
+      speedY: -Math.random() * 0.4 - 0.1,
+      opacity: Math.random() * 0.5 + 0.1,
+      fadeDir: Math.random() > 0.5 ? 0.002 : -0.002,
+      gold: Math.random() > 0.7
+    };
+  }
+
+  function init() {
+    resize();
+    const isMobile = w < 768;
+    const count = isMobile ? Math.min(Math.floor(w * h / 25000), 40) : Math.min(Math.floor(w * h / 12000), 120);
+    particles = [];
+    for (let i = 0; i < count; i++) {
+      particles.push(createParticle(true));
+    }
+  }
+
+  // Subtle mouse interaction — particles drift away from cursor
+  document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  }, { passive: true });
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+
+      // Mouse repulsion (subtle)
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120 && dist > 0) {
+        const force = (120 - dist) / 120 * 0.3;
+        p.x += (dx / dist) * force;
+        p.y += (dy / dist) * force;
+      }
+
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.opacity += p.fadeDir;
+
+      if (p.opacity <= 0.05 || p.opacity >= 0.6) p.fadeDir *= -1;
+      if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+      if (p.x < -10) p.x = w + 10;
+      if (p.x > w + 10) p.x = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      if (p.gold) {
+        ctx.fillStyle = `rgba(196, 150, 60, ${p.opacity * 0.7})`;
+      } else {
+        ctx.fillStyle = `rgba(212, 203, 192, ${p.opacity * 0.4})`;
+      }
+      ctx.fill();
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  animate();
+})();
+
+// ===== READING PROGRESS BAR =====
+(function() {
+  const bar = document.querySelector('.progress-bar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    bar.style.width = progress + '%';
+  }, { passive: true });
+})();
+
+// ===== SCROLL REVEAL ANIMATIONS =====
+(function() {
+  // Reveal chapters paragraphs, quotes
+  const chapters = document.querySelectorAll('.chapter');
+  chapters.forEach(ch => {
+    const els = ch.querySelectorAll('p, .quote, .divider, h2');
+    els.forEach((el, i) => {
+      el.classList.add('reveal');
+    });
+  });
+
+  // Reveal quote pages
+  document.querySelectorAll('.quote-page').forEach(el => el.classList.add('reveal'));
+
+  // Closing section — staggered reveals
+  const closing = document.querySelector('.closing-content');
+  if (closing) {
+    // First paragraph
+    const firstP = closing.querySelector('p');
+    if (firstP) firstP.classList.add('reveal');
+
+    // Questions — each one staggered
+    const questions = closing.querySelectorAll('.questions p');
+    questions.forEach((p, i) => {
+      p.classList.add('reveal');
+      p.classList.add('reveal-delay-' + (i + 1));
+    });
+
+    // Divider
+    const dividers = closing.querySelectorAll('.divider');
+    dividers.forEach(d => { d.classList.add('reveal'); d.classList.add('reveal-delay-4'); });
+
+    // Taglines — staggered
+    const taglines = closing.querySelectorAll('.taglines p');
+    taglines.forEach((p, i) => {
+      p.classList.add('reveal');
+      p.classList.add('reveal-delay-' + Math.min(i + 1, 5));
+    });
+
+    // Signature
+    const sig = closing.querySelector('.signature');
+    if (sig) { sig.classList.add('reveal'); sig.classList.add('reveal-delay-5'); }
+  }
+
+  // IntersectionObserver for reveals
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // H2 underline animation (separate since reveal handles opacity)
+  const h2Observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('h2').forEach(el => h2Observer.observe(el));
+
+  // Chapter header text animations
+  const headerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('in-view');
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.chapter-header, .chapter-header-noimg').forEach(el => headerObserver.observe(el));
+})();
+
+// ===== PARALLAX ON CHAPTER HEADERS =====
+(function() {
+  const headers = document.querySelectorAll('.chapter-header img');
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        headers.forEach(img => {
+          const parent = img.parentElement;
+          const rect = parent.getBoundingClientRect();
+          // Only apply parallax when in view
+          if (rect.bottom > 0 && rect.top < window.innerHeight) {
+            const parentCenter = rect.top + rect.height / 2;
+            const viewCenter = window.innerHeight / 2;
+            const offset = (parentCenter - viewCenter) * 0.15;
+            img.style.transform = 'translateY(' + offset + 'px)';
+          }
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
+// ===== FLOATING TABLE OF CONTENTS =====
+(function() {
+  const toc = document.querySelector('.toc-nav');
+  const dots = toc.querySelectorAll('.toc-dot');
+  const sections = [];
+
+  dots.forEach(dot => {
+    const target = document.querySelector(dot.dataset.target);
+    if (target) sections.push({ dot, target });
+
+    dot.addEventListener('click', () => {
+      const t = document.querySelector(dot.dataset.target);
+      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  const cover = document.querySelector('.cover');
+  let tocTicking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!tocTicking) {
+      requestAnimationFrame(() => {
+        const coverBottom = cover.getBoundingClientRect().bottom;
+        if (coverBottom < 0) {
+          toc.classList.add('visible');
+        } else {
+          toc.classList.remove('visible');
+        }
+
+        let closest = null;
+        let closestDist = Infinity;
+        sections.forEach(s => {
+          const rect = s.target.getBoundingClientRect();
+          const dist = Math.abs(rect.top);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closest = s;
+          }
+        });
+
+        dots.forEach(d => d.classList.remove('active'));
+        if (closest) closest.dot.classList.add('active');
+        tocTicking = false;
+      });
+      tocTicking = true;
+    }
+  }, { passive: true });
+})();
+
+// ===== HIDE SCROLL INDICATOR ON SCROLL =====
+(function() {
+  const indicator = document.querySelector('.scroll-indicator');
+  if (!indicator) return;
+  let hidden = false;
+  window.addEventListener('scroll', () => {
+    if (!hidden && window.scrollY > 100) {
+      indicator.style.transition = 'opacity 0.6s ease';
+      indicator.style.opacity = '0';
+      hidden = true;
+    }
+  }, { passive: true });
+})();
+</script>
+
+</body>
+</html>
