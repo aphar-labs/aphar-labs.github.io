@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -31,7 +31,7 @@
 
 <title>$DUST — The Manifesto</title>
 
-    <base href="/manifesto/">
+<base href="/manifesto/">
 <link rel="preload" href="img/prologue.jpg" as="image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,13 +41,13 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --gold: #D4AC55;
+  --gold: #C4963C;
   --gold-light: #D4A84E;
   --gold-glow: rgba(196, 150, 60, 0.4);
   --dark: #0A0A0A;
   --darker: #050505;
-  --text: #EDE6DF;
-  --text-dim: #C4B8AD;
+  --text: #D4CBC0;
+  --text-dim: #8A8078;
   --accent-border: rgba(196, 150, 60, 0.3);
 }
 
@@ -393,16 +393,6 @@ body {
   text-shadow: 0 0 20px var(--gold-glow);
 }
 
-    .chapter > p.no-dropcap:first-of-type::first-letter {
-      font-size: inherit !important;
-      float: none !important;
-      line-height: inherit !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      font-family: inherit;
-      color: inherit;
-    }
-
 /* ===== HEADINGS ===== */
 h2 {
   font-family: 'Cinzel', serif;
@@ -704,76 +694,6 @@ p {
   #dust-particles, .progress-bar, .toc-nav, .scroll-indicator, .fade-out-end { display: none; }
 }
 
-
-
-    /* Man in the Arena - Play Button */
-    .arena-section {
-      text-align: center;
-      margin-top: 32px;
-      margin-bottom: 8px;
-    }
-    .arena-quote {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.05em;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      margin-bottom: 16px;
-      font-style: italic;
-    }
-    .arena-play-btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      background: rgba(196, 150, 60, 0.08);
-      cursor: pointer;
-      transition: all 0.4s ease;
-      outline: none;
-    }
-    .arena-play-btn:hover {
-      background: rgba(196, 150, 60, 0.18);
-      border-color: var(--gold);
-      box-shadow: 0 0 24px rgba(196, 150, 60, 0.25);
-      transform: scale(1.08);
-    }
-    .arena-play-btn.playing {
-      border-color: var(--gold);
-      box-shadow: 0 0 32px rgba(196, 150, 60, 0.3);
-    }
-    .arena-play-icon {
-      font-size: 22px;
-      color: var(--gold);
-      margin-left: 3px;
-      z-index: 1;
-    }
-    .arena-play-btn.playing .arena-play-icon {
-      margin-left: 0;
-      font-size: 16px;
-      letter-spacing: 2px;
-    }
-    .arena-pulse {
-      display: none;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      animation: arenaPulse 1.8s ease-out infinite;
-    }
-    @keyframes arenaPulse {
-      0% { transform: scale(1); opacity: 0.6; }
-      100% { transform: scale(1.8); opacity: 0; }
-    }
-    .arena-attribution {
-      font-size: 0.75em;
-      color: var(--text-dim);
-      letter-spacing: 0.2em;
-      margin-top: 12px;
-    }
 </style>
 </head>
 <body>
@@ -802,15 +722,6 @@ p {
     <div class="subtitle">The Manifesto</div>
     <div class="tagline">The Economic Argument for Human Existence in the Age of AI</div>
     <div class="author" style="font-family:'Arial',sans-serif;">Written by 0xAphar &mdash; March 2026</div>
-
-    <div class="arena-section">
-      <div class="arena-quote">&ldquo;The Man in the Arena&rdquo;</div>
-      <button id="arena-play-btn" class="arena-play-btn" aria-label="Play speech">
-        <span id="arena-pulse" class="arena-pulse"></span>
-        <span id="arena-play-icon" class="arena-play-icon">&#x25B6;</span>
-      </button>
-      <div class="arena-attribution">&mdash; Theodore Roosevelt, 1910</div>
-    </div>
   </div>
   <div class="scroll-indicator"><div class="arrow"></div></div>
 </section>
@@ -898,8 +809,6 @@ p {
   <p>HODL told you to sit still. MOEV tells you to prove you are alive.</p>
   <p>HODL was born from a typo by a man who had given up on making decisions. MOEV is born from a conviction that the only decisions that matter are the ones you make every single day. Not once. Not at the moment of purchase. Every day.</p>
   <p>MOEV is not a trading strategy. It is a life philosophy encoded into a currency. The hand that grips the coin turns to stone. The hand that moves stays alive. The idle fund the active. The dead fund the living.</p>
-
-<div class="pull-quote reveal"><p>The idle fund the active. The dead fund the living.</p></div>
   <div class="quote"><p>Bitcoin proved that money does not need a government. DUST proves that humans do not need permission to matter.</p></div>
 </div>
 
@@ -937,6 +846,8 @@ p {
   <p>Each day, after completing all daily tasks, holders unlock the Dust Scroll: a scripture-based reflection prompt drawn from ancient texts such as Genesis, Ecclesiastes, Proverbs, James, Enoch, and Jubilees.</p>
   <p>The Dust Scroll is not religious instruction. It is ancient wisdom reframed as a daily practice. Each prompt asks one question: what did you do today that proves you are still alive?</p>
   <p>Faith without works is dead. Tokens without movement return to dust. Same principle. Same source code.</p>
+
+  <div class="pull-quote"><p>The idle fund the active. The dead fund the living.</p></div>
 </div>
 
 <!-- CHAPTER 4 -->
@@ -963,7 +874,7 @@ p {
   <p>The visual identity of DUST is a fingerprint that dissolves into particles. The fingerprint is the original proof of life. It is the one thing that proves you are a unique human being. No AI has one. No bot has one.</p>
   <p>A dissolving fingerprint says everything DUST stands for: you were here, you are unique, but time is taking you unless you keep moving. It appears across the ecosystem, on merchandise, and in the physical world. When people see it, they know what it means. Still moving.</p>
 
-<div class="pull-quote reveal"><p>You were here. You were unique. Now prove you are still moving.</p></div>
+  <div class="pull-quote"><p>You were here. You were unique. Now prove you are still moving.</p></div>
 </div>
 
 <!-- CHAPTER 5 -->
@@ -983,7 +894,7 @@ p {
   <p>This culture cannot be replicated by a fork. You can copy the code. You cannot copy the daily commitment of thousands of humans proving they are alive. That is the moat. Not technology. Not tokenomics. Human effort sustained over time.</p>
 
   <h2>The Genesis</h2>
-  <p>DUST launches with a test. Multiple tokens deploy simultaneously. The majority are decoys. One is real. Its identity is hidden in the pre-launch content for those who paid attention.</p>
+  <p>DUST launches with a test. 51 tokens deploy simultaneously. 50 are decoys. One is real. Its identity is hidden in the pre-launch content for those who paid attention.</p>
   <p>This is the first proof of life test. Bots will spread their capital across worthless tokens. Humans who did the research, read the posts, and paid attention will find the real one. From the very first second, DUST rewards the humans who show up and punishes the machines that try to game the system.</p>
   <p>Culture builds the community. But a community needs more than culture to survive.</p>
 </div>
@@ -1008,7 +919,7 @@ p {
   <p>Communities that cannot access clean water get water. Communities that cannot access energy get energy. Communities that cannot access shelter get shelter. Not through charity. Through participation in an economy that owns the resources and distributes access to the people who prove daily that they are alive and contributing.</p>
   <p>An economy built on proof of life refuses to let life go without water.</p>
 
-<div class="pull-quote reveal"><p>What begins as a token evolves into a currency backed by the things that keep humans alive.</p></div>
+  <div class="pull-quote"><p>What begins as a token evolves into a currency backed by the things that keep humans alive.</p></div>
 
   <div class="divider"></div>
 
@@ -1059,7 +970,7 @@ p {
 
 <div class="chapter">
   <h2>The Evolution of Purpose</h2>
-  <p class="no-dropcap"style="text-align:center;color:var(--gold);font-style:italic;">Phase 1: The last economy that needs humans.</p>
+  <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 1: The last economy that needs humans.</p>
   <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 2: The proof that humans were here.</p>
   <p style="text-align:center;color:var(--gold);font-style:italic;">Phase 3: The reason humans stayed.</p>
 
@@ -1095,7 +1006,7 @@ p {
 
     <div class="signature">
       <div class="name">&mdash; 0xAphar</div>
-      <div class="links"><a href="https://aphar.io" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">aphar.io</a> &nbsp;&bull;&nbsp; <a href="https://x.com/0xAphar" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">@0xAphar</a></div>
+      <div class="links"><a href="https://dexscreener.com/solana/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">DexScreener</a> &nbsp;&bull;&nbsp; <a href="https://pump.fun/coin/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">Pump.fun</a> &nbsp;&bull;&nbsp; <a href="https://aphar.io" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">aphar.io</a> &nbsp;&bull;&nbsp; <a href="https://x.com/0xAphar" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">@0xAphar</a> &nbsp;&bull;&nbsp; <a href="https://x.com/TheDust_Coin" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">@TheDust_Coin</a> &nbsp;&bull;&nbsp; <a href="https://t.me/TheDustCoin" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:none;transition:color 0.3s ease;">Telegram</a></div>
     </div>
   </div>
 </section>
@@ -1364,50 +1275,5 @@ p {
 })();
 </script>
 
-
-<audio id="arena-audio" preload="auto" src="arena.mp3"></audio>
-<script>
-(function() {
-  var audio = document.getElementById('arena-audio');
-  var btn = document.getElementById('arena-play-btn');
-  var icon = document.getElementById('arena-play-icon');
-  var pulse = document.getElementById('arena-pulse');
-  var isPlaying = false;
-
-  btn.addEventListener('click', function() {
-    if (isPlaying) {
-      audio.pause();
-      audio.currentTime = 0;
-      isPlaying = false;
-      icon.innerHTML = '\u25B6';
-      icon.style.marginLeft = '3px';
-      icon.style.fontSize = '22px';
-      icon.style.letterSpacing = '0';
-      pulse.style.display = 'none';
-      btn.classList.remove('playing');
-      return;
-    }
-    audio.currentTime = 0;
-    audio.play();
-    isPlaying = true;
-    icon.innerHTML = '\u275A\u275A';
-    icon.style.marginLeft = '0';
-    icon.style.fontSize = '16px';
-    icon.style.letterSpacing = '2px';
-    pulse.style.display = 'block';
-    btn.classList.add('playing');
-  });
-
-  audio.addEventListener('ended', function() {
-    isPlaying = false;
-    icon.innerHTML = '\u25B6';
-    icon.style.marginLeft = '3px';
-    icon.style.fontSize = '22px';
-    icon.style.letterSpacing = '0';
-    pulse.style.display = 'none';
-    btn.classList.remove('playing');
-  });
-})();
-</script>
 </body>
 </html>

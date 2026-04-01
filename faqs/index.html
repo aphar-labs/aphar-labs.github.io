@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$DUST — FAQs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.3) transparent;}
+    html::-webkit-scrollbar{width:3px;}
+    html::-webkit-scrollbar-track{background:transparent;}
+    html::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px;}
+    body{
+      background:#050403;
+      color:#E8E0D0;
+      font-family:'Cormorant Garamond',Georgia,serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ── Grain ── */
+    .grain{
+      position:fixed;inset:-50%;width:200%;height:200%;
+      z-index:60;pointer-events:none;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation:grainDrift 8s steps(10) infinite;
+    }
+    @keyframes grainDrift{
+      0%,100%{transform:translate(0,0);}
+      20%{transform:translate(-5%,-10%);}
+      40%{transform:translate(3%,-15%);}
+      60%{transform:translate(12%,9%);}
+      80%{transform:translate(-1%,7%);}
+    }
+
+    /* ── Top Nav ── */
+    .topnav{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,4vw,48px);
+      height:56px;
+      background:linear-gradient(180deg, rgba(5,4,3,0.95) 0%, rgba(5,4,3,0.7) 70%, transparent 100%);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border-bottom:none;
+    }
+    .topnav-brand{
+      font-size:16px;font-weight:500;letter-spacing:0.08em;
+      color:#C9A84C;text-decoration:none;
+    }
+    .topnav-links{
+      display:flex;align-items:center;gap:clamp(16px,3vw,32px);
+    }
+    .topnav-link{
+      font-size:11px;font-weight:400;letter-spacing:0.22em;
+      text-transform:uppercase;color:rgba(232,224,208,0.7);
+      text-decoration:none;transition:color 0.3s ease;
+    }
+    .topnav-link:hover{color:#E8E0D0;}
+    .topnav-link.active{color:#E8E0D0;}
+
+    /* Play button in nav */
+    .nav-play{
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.5);
+      background:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all 0.3s ease;position:relative;
+    }
+    .nav-play:hover{
+      border-color:rgba(201,168,76,0.7);
+      background:rgba(201,168,76,0.06);
+    }
+    .nav-play.playing{border-color:#C9A84C;background:rgba(201,168,76,0.1);}
+    .nav-play-icon{
+      color:#C9A84C;font-size:10px;margin-left:2px;
+      line-height:1;
+    }
+    .nav-play.playing .nav-play-icon{margin-left:0;font-size:9px;letter-spacing:1px;}
+    .nav-pulse{
+      position:absolute;inset:-3px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.4);
+      animation:navPulse 2s ease-out infinite;
+      display:none;
+    }
+    .nav-play.playing .nav-pulse{display:block;}
+    @keyframes navPulse{
+      0%{transform:scale(1);opacity:0.6;}
+      100%{transform:scale(1.6);opacity:0;}
+    }
+
+    /* ── Page Layout ── */
+    .page{
+      max-width:720px;
+      margin:0 auto;
+      padding:120px 24px 80px;
+      min-height:100vh;
+    }
+
+    /* ── Page Header ── */
+    .page-label{
+      font-size:10px;font-weight:400;letter-spacing:0.3em;
+      text-transform:uppercase;color:rgba(201,168,76,0.8);
+      margin-bottom:12px;
+    }
+    .page-title{
+      font-size:clamp(32px,6vw,56px);font-weight:300;
+      font-style:italic;color:#E8E0D0;
+      line-height:1.2;margin-bottom:12px;
+    }
+    .page-subtitle{
+      font-size:clamp(14px,1.8vw,18px);font-weight:300;
+      font-style:italic;color:rgba(232,224,208,0.55);
+      margin-bottom:56px;line-height:1.5;
+    }
+
+    /* ── FAQ Accordion ── */
+    .faq-section{
+      margin-bottom:48px;
+    }
+    .faq-section-label{
+      font-size:9px;font-weight:400;letter-spacing:0.35em;
+      text-transform:uppercase;color:rgba(201,168,76,0.85);
+      margin-bottom:20px;padding-bottom:10px;
+      border-bottom:1px solid rgba(201,168,76,0.08);
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(201,168,76,0.06);
+    }
+    .faq-q{
+      width:100%;background:none;border:none;
+      text-align:left;cursor:pointer;
+      padding:20px 0;
+      display:flex;align-items:flex-start;justify-content:space-between;
+      gap:16px;
+      font-family:'Cormorant Garamond',Georgia,serif;
+      transition:opacity 0.3s ease;
+    }
+    .faq-q:hover{opacity:0.85;}
+    .faq-q-text{
+      font-size:clamp(17px,2.2vw,22px);font-weight:400;
+      color:#E8E0D0;line-height:1.4;
+    }
+    .faq-q-icon{
+      font-size:18px;color:rgba(201,168,76,0.5);
+      flex-shrink:0;margin-top:4px;
+      transition:transform 0.3s ease;
+    }
+    .faq-item.open .faq-q-icon{transform:rotate(45deg);}
+
+    .faq-a{
+      max-height:0;overflow:hidden;
+      transition:max-height 0.4s ease, padding 0.3s ease;
+    }
+    .faq-item.open .faq-a{
+      max-height:600px;
+    }
+    .faq-a-inner{
+      padding:0 0 24px 0;
+      font-size:clamp(14px,1.6vw,17px);font-weight:300;
+      color:rgba(232,224,208,0.7);line-height:1.7;
+    }
+    .faq-a-inner strong{
+      color:rgba(201,168,76,0.85);font-weight:500;
+    }
+    .faq-a-inner a{
+      color:#C9A84C;text-decoration:none;
+      border-bottom:1px solid rgba(201,168,76,0.2);
+      transition:border-color 0.3s ease;
+    }
+    .faq-a-inner a:hover{border-color:rgba(201,168,76,0.6);}
+
+    /* ── Footer ── */
+    .footer{
+      width:100%;padding:32px 24px 24px;text-align:center;
+      background:#050403;
+      border-top:1px solid rgba(201,168,76,0.04);
+    }
+    .footer-row{
+      display:flex;gap:clamp(20px,4vw,36px);justify-content:center;
+      align-items:center;flex-wrap:wrap;margin-bottom:20px;
+    }
+    .footer-link{
+      color:rgba(201,168,76,0.6);text-decoration:none;
+      font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+      font-weight:400;transition:color 0.3s ease;
+      display:inline-flex;align-items:center;gap:5px;
+    }
+    .footer-link:hover{color:rgba(201,168,76,0.8);}
+    .footer-link svg{width:12px;height:12px;fill:currentColor;}
+    .footer-dust{
+      font-size:10px;letter-spacing:0.45em;text-transform:uppercase;
+      color:rgba(232,224,208,0.06);
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:600px){
+      .topnav{padding:0 16px;height:48px;}
+      .topnav-link{font-size:9px;letter-spacing:0.15em;}
+      .page{padding:100px 20px 60px;}
+      .footer-row{gap:16px;}
+    }
+    @media(max-width:380px){
+      .topnav-links{gap:10px;}
+    }
+
+    ::selection{background:rgba(201,168,76,0.25);color:#E8E0D0;}
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <a href="/" class="topnav-brand">$DUST</a>
+  <div class="topnav-links">
+    <a href="/" class="topnav-link">Home</a>
+    <a href="/manifesto" class="topnav-link">Manifesto</a>
+    <a href="/rules" class="topnav-link">Rules</a>
+    <a href="/faqs" class="topnav-link active">FAQs</a>
+    <a href="/pfp" class="topnav-link">PFP</a>
+    <button class="nav-play" id="navPlayBtn" title="The Man in the Arena">
+      <span class="nav-play-icon" id="navPlayIcon">&#9654;</span>
+      <span class="nav-pulse"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ FAQ CONTENT ═══ -->
+<main class="page">
+
+  <div class="page-label">Frequently Asked Questions</div>
+  <h1 class="page-title">Before You MOEV</h1>
+  <p class="page-subtitle">Everything you need to know about $DUST, the movement, and what comes next.</p>
+
+  <!-- ── THE BASICS ── -->
+  <div class="faq-section">
+    <div class="faq-section-label">The Basics</div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is $DUST?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        $DUST is the economic argument for human existence in the age of artificial intelligence. On the surface it is a memecoin on Solana. Underneath, it is a movement built on a single principle: <strong>value comes from movement, not storage.</strong> Every other token asks you to hold. $DUST asks you to prove you are alive.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">How do I buy $DUST?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        You need a Solana wallet (Phantom, Solflare, or similar) funded with SOL. Then swap for $DUST on <a href="https://pump.fun" target="_blank">PumpSwap</a> using the contract address on our homepage. Copy the CA, paste it into the swap, confirm the transaction. You are now a Mover.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Is there a tax on buying or selling?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        At launch, zero tax. No hidden fees. No complex mechanics. As the ecosystem grows and the real infrastructure gets built — blockchain development, liquidity, platform engineering — a modest tax may be introduced to fund it. You will always know before it happens. Nothing hidden. Nothing extracted without purpose.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What does "Movers" mean?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        Movers are $DUST holders. We do not use the word "holders" because holding is the opposite of what $DUST stands for. You do not hold $DUST. You move with it. The thesis is simple: <strong>keep moving or die.</strong>
+      </div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Is this a rug pull?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        The dev wallet holds 0% of the supply. Liquidity is locked. There is no insider allocation. No pre-sale. No bundled wallets. Everything is verifiable on-chain. $DUST is not built to extract — it is built to circulate. If it stops moving, it dies. That is the point.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Where can I track the price?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <a href="https://dexscreener.com" target="_blank">DexScreener</a>. Search the contract address and you will see live price, volume, liquidity, and the full chart. While you are there, hit the rocket.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What blockchain is $DUST on?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        Solana. Low fees, fast transactions, and the chain where culture moves fastest.
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ── THE PHILOSOPHY ── -->
+  <div class="faq-section">
+    <div class="faq-section-label">The Philosophy</div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is MOEV?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        MOEV stands for <strong>Move Or Decay</strong> — the opposite of HODL. HODL was born from a typo by a drunk Bitcoin trader in 2013. It became a philosophy of sitting still and waiting. MOEV is the counter-thesis: value is created through movement, effort, and daily proof that you are alive. It is not a trading strategy. It is a life philosophy encoded into currency.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Why Genesis 3:19?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        <em>"For you are dust, and to dust you shall return."</em> This is the source code. Every token decays. Every economy slows. Every person returns to dust. The difference is whether you moved while you were here. $DUST does not hide from this truth — it builds on it.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What does "Proof of Life" mean?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        In a world where AI can fake everything — faces, voices, credentials, conversations — the only thing it cannot fake is sustained daily human effort over time. Proof of Life is the principle that your participation, your movement, your showing up every day is the one thing that separates you from a machine. $DUST is being built to reward exactly that.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Is $DUST a religious project?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        No. $DUST draws from scripture because scripture contains the oldest observations about human nature, work, decay, and purpose. These are not religious instructions — they are ancient truths reframed for a modern economy. You do not need faith to understand that sitting still leads to decay.
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ── WHAT IS COMING ── -->
+  <div class="faq-section">
+    <div class="faq-section-label">What Is Coming</div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Is $DUST just a memecoin?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        The meme is the door. Phase 1 is a memecoin on Solana — no tax, no complex mechanics, pure culture. But there is a Phase 2 being built behind it. A staking protocol, a platform, a scoring system, and an economy designed to reward humans who prove daily that they are still moving. One token. Two phases. Read the <a href="/manifesto">Manifesto</a> if you want to see what is on the other side of the door.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Will there be a new token or migration?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        Phase 2 is built on top of the Phase 1 token. No new token. No second buy-in. As the ecosystem evolves, the infrastructure underneath may change — but your $DUST remains your $DUST. If any transition ever happens, Movers will always come first.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is the Dust Score?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        A publicly visible measure of sustained human participation. It cannot be bought. It cannot be faked long-term. It is built by showing up daily — completing tasks, engaging with others, proving you are alive. The Dust Score does not care where you live, how much money you have, or who you know. It only asks one question: <strong>did you show up today?</strong> More details will be revealed as Phase 2 approaches.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is being built beyond the token?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        A platform where the token IS the account. A social layer driven by activity, not algorithms. A task economy connecting people who need work done with people willing to do it. The full vision is in the Manifesto. What you see today is the foundation.
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ── THE MOVEMENT ── -->
+  <div class="faq-section">
+    <div class="faq-section-label">The Movement</div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">How do I support $DUST beyond buying?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        Move. Post what you did today — not what you bought. Share the Manifesto. Hit the rocket on <a href="https://dexscreener.com" target="_blank">DexScreener</a>. Vote on <a href="https://moonshot.money" target="_blank">Moonshot</a>. Follow <a href="https://x.com/0xAphar" target="_blank">0xAphar</a> on X. Generate your PFP. Use #MOEV and #ProofOfLife. The culture is the moat — and culture is built by people who show up.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is "The Man in the Arena"?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        A passage from Theodore Roosevelt about the person who is actually in the fight — not the critic on the sidelines. It is the spirit of $DUST. The play button in the navigation plays a narration of it. Listen to it. Then decide if you are in the arena or watching from the stands.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">What is a PFP and why should I generate one?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        A PFP is a profile picture — your identity in the $DUST movement. Our generator creates AI-crafted identities forged from dust and fire. Your face in the arena. It is how Movers recognize each other. It is how the culture becomes visible.
+      </div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q">
+        <span class="faq-q-text">Who is behind $DUST?</span>
+        <span class="faq-q-icon">+</span>
+      </button>
+      <div class="faq-a"><div class="faq-a-inner">
+        0xAphar. One person who asked one question: what economic function requires a human when AI does everything? The answer became $DUST. The Manifesto is the full argument. The movement is everyone who reads it and decides to keep moving.
+      </div></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-row">
+    <a href="https://dexscreener.com/solana/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">DexScreener</a>
+    <a href="https://pump.fun/coin/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">Pump.fun</a>
+    <a href="https://moonshot.money" class="footer-link" target="_blank">Moonshot</a>
+    <a href="https://x.com/0xAphar" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      0xAphar
+    </a>
+    <a href="https://x.com/TheDust_Coin" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      TheDust_Coin
+    </a>
+    <a href="https://t.me/TheDustCoin" class="footer-link" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-dust">from dust</div>
+</footer>
+
+<!-- ═══ Audio (hidden) ═══ -->
+<audio id="arena-audio" preload="auto" src="/manifesto/arena.mp3"></audio>
+
+<script>
+(function(){
+  // Nav play button
+  var audio = document.getElementById('arena-audio');
+  var btn = document.getElementById('navPlayBtn');
+  var icon = document.getElementById('navPlayIcon');
+  var isPlaying = false;
+
+  btn.addEventListener('click', function(){
+    if(isPlaying){
+      audio.pause();
+      audio.currentTime = 0;
+      isPlaying = false;
+      icon.innerHTML = '\u25B6';
+      icon.style.marginLeft = '2px';
+      icon.style.fontSize = '10px';
+      icon.style.letterSpacing = '0';
+      btn.classList.remove('playing');
+      return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+    isPlaying = true;
+    icon.innerHTML = '\u275A\u275A';
+    icon.style.marginLeft = '0';
+    icon.style.fontSize = '9px';
+    icon.style.letterSpacing = '1px';
+    btn.classList.add('playing');
+  });
+
+  audio.addEventListener('ended', function(){
+    isPlaying = false;
+    icon.innerHTML = '\u25B6';
+    icon.style.marginLeft = '2px';
+    icon.style.fontSize = '10px';
+    icon.style.letterSpacing = '0';
+    btn.classList.remove('playing');
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = this.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      // Close all others
+      document.querySelectorAll('.faq-item.open').forEach(function(el){
+        el.classList.remove('open');
+      });
+      // Toggle clicked
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

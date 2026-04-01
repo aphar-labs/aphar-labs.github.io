@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$DUST — Roadmap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.3) transparent;}
+    html::-webkit-scrollbar{width:3px;}
+    html::-webkit-scrollbar-track{background:transparent;}
+    html::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px;}
+    body{
+      background:#050403;
+      color:#E8E0D0;
+      font-family:'Cormorant Garamond',Georgia,serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ── Grain ── */
+    .grain{
+      position:fixed;inset:-50%;width:200%;height:200%;
+      z-index:60;pointer-events:none;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation:grainDrift 8s steps(10) infinite;
+    }
+    @keyframes grainDrift{
+      0%,100%{transform:translate(0,0);}
+      20%{transform:translate(-5%,-10%);}
+      40%{transform:translate(3%,-15%);}
+      60%{transform:translate(12%,9%);}
+      80%{transform:translate(-1%,7%);}
+    }
+
+    /* ── Top Nav ── */
+    .topnav{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,4vw,48px);
+      height:56px;
+      background:linear-gradient(180deg, rgba(5,4,3,0.95) 0%, rgba(5,4,3,0.7) 70%, transparent 100%);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border-bottom:none;
+    }
+    .topnav-brand{
+      font-size:16px;font-weight:500;letter-spacing:0.08em;
+      color:#C9A84C;text-decoration:none;
+    }
+    .topnav-links{
+      display:flex;align-items:center;gap:clamp(16px,3vw,32px);
+    }
+    .topnav-link{
+      font-size:11px;font-weight:400;letter-spacing:0.22em;
+      text-transform:uppercase;color:rgba(232,224,208,0.7);
+      text-decoration:none;transition:color 0.3s ease;
+    }
+    .topnav-link:hover{color:#E8E0D0;}
+    .topnav-link.active{color:#E8E0D0;}
+
+    /* Play button in nav */
+    .nav-play{
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.5);
+      background:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all 0.3s ease;position:relative;
+    }
+    .nav-play:hover{
+      border-color:rgba(201,168,76,0.7);
+      background:rgba(201,168,76,0.06);
+    }
+    .nav-play.playing{border-color:#C9A84C;background:rgba(201,168,76,0.1);}
+    .nav-play-icon{
+      color:#C9A84C;font-size:10px;margin-left:2px;
+      line-height:1;
+    }
+    .nav-play.playing .nav-play-icon{margin-left:0;font-size:9px;letter-spacing:1px;}
+    .nav-pulse{
+      position:absolute;inset:-3px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.4);
+      animation:navPulse 2s ease-out infinite;
+      display:none;
+    }
+    .nav-play.playing .nav-pulse{display:block;}
+    @keyframes navPulse{
+      0%{transform:scale(1);opacity:0.6;}
+      100%{transform:scale(1.6);opacity:0;}
+    }
+
+    /* ── Page Layout ── */
+    .page{
+      max-width:800px;
+      margin:0 auto;
+      padding:120px 24px 80px;
+      min-height:100vh;
+    }
+
+    /* ── Page Header ── */
+    .page-label{
+      font-size:10px;font-weight:400;letter-spacing:0.3em;
+      text-transform:uppercase;color:rgba(201,168,76,0.85);
+      margin-bottom:12px;
+    }
+    .page-title{
+      font-size:clamp(32px,6vw,56px);font-weight:300;
+      font-style:italic;color:#E8E0D0;
+      line-height:1.2;margin-bottom:12px;
+    }
+    .page-subtitle{
+      font-size:clamp(14px,1.8vw,18px);font-weight:300;
+      font-style:italic;color:rgba(232,224,208,0.55);
+      margin-bottom:64px;line-height:1.5;
+    }
+
+    /* ── Timeline ── */
+    .timeline{
+      position:relative;
+      padding-left:clamp(32px,5vw,56px);
+    }
+    /* Vertical line */
+    .timeline::before{
+      content:'';
+      position:absolute;
+      left:0;top:0;bottom:0;
+      width:1px;
+      background:linear-gradient(180deg,
+        rgba(201,168,76,0.5) 0%,
+        rgba(201,168,76,0.3) 20%,
+        rgba(201,168,76,0.15) 50%,
+        rgba(201,168,76,0.06) 80%,
+        transparent 100%
+      );
+    }
+
+    /* ── Milestone ── */
+    .milestone{
+      position:relative;
+      padding-bottom:clamp(40px,5vw,56px);
+      transition:opacity 0.6s ease;
+    }
+    .milestone:last-child{padding-bottom:0;}
+
+    /* Dot on timeline */
+    .milestone::before{
+      content:'';
+      position:absolute;
+      left:calc(-1 * clamp(32px,5vw,56px) - 4px);
+      top:6px;
+      width:9px;height:9px;
+      border-radius:50%;
+      background:#050403;
+      border:2px solid rgba(201,168,76,0.4);
+      transition:all 0.4s ease;
+      z-index:2;
+    }
+    .milestone.active::before{
+      border-color:#C9A84C;
+      background:#C9A84C;
+      box-shadow:0 0 12px rgba(201,168,76,0.4);
+    }
+    .milestone.unlocked::before{
+      border-color:rgba(201,168,76,0.6);
+      background:rgba(201,168,76,0.3);
+    }
+
+    /* Movers threshold */
+    .ms-threshold{
+      font-size:clamp(8px,1vw,10px);font-weight:400;
+      letter-spacing:0.3em;text-transform:uppercase;
+      margin-bottom:6px;
+      transition:color 0.4s ease;
+    }
+    .milestone.active .ms-threshold{color:#C9A84C;}
+    .milestone.unlocked .ms-threshold{color:rgba(201,168,76,0.7);}
+
+    /* Title */
+    .ms-title{
+      font-size:clamp(22px,3vw,32px);font-weight:300;
+      line-height:1.3;margin-bottom:8px;
+      transition:color 0.4s ease;
+    }
+
+    /* Description */
+    .ms-desc{
+      font-size:clamp(14px,1.6vw,17px);font-weight:300;
+      line-height:1.7;
+      transition:color 0.4s ease;
+    }
+
+    /* ── Dust overlay per milestone ── */
+    .ms-dust{
+      position:absolute;inset:0;
+      pointer-events:none;
+      z-index:1;
+      transition:opacity 0.6s ease;
+    }
+
+    /* ── Visibility tiers ── */
+    /* Tier 0 - Active / Launch - fully visible */
+    .milestone.active .ms-threshold{color:#C9A84C;}
+    .milestone.active .ms-title{color:#E8E0D0;}
+    .milestone.active .ms-desc{color:rgba(232,224,208,0.7);}
+    .milestone.active .ms-dust{opacity:0;}
+
+    /* Tier 1 - Unlocked - slightly faded */
+    .milestone.unlocked .ms-threshold{color:rgba(201,168,76,0.7);}
+    .milestone.unlocked .ms-title{color:rgba(232,224,208,0.85);}
+    .milestone.unlocked .ms-desc{color:rgba(232,224,208,0.6);}
+    .milestone.unlocked .ms-dust{opacity:0;}
+
+    /* Dust levels - progressively buried */
+    .milestone.dust-1 .ms-threshold{color:rgba(201,168,76,0.55);}
+    .milestone.dust-1 .ms-title{color:rgba(232,224,208,0.65);}
+    .milestone.dust-1 .ms-desc{color:rgba(232,224,208,0.4);}
+
+    .milestone.dust-2 .ms-threshold{color:rgba(201,168,76,0.4);}
+    .milestone.dust-2 .ms-title{color:rgba(232,224,208,0.45);}
+    .milestone.dust-2 .ms-desc{color:rgba(232,224,208,0.25);}
+
+    .milestone.dust-3 .ms-threshold{color:rgba(201,168,76,0.28);}
+    .milestone.dust-3 .ms-title{color:rgba(232,224,208,0.3);}
+    .milestone.dust-3 .ms-desc{color:rgba(232,224,208,0.15);}
+
+    .milestone.dust-4 .ms-threshold{color:rgba(201,168,76,0.18);}
+    .milestone.dust-4 .ms-title{color:rgba(232,224,208,0.18);}
+    .milestone.dust-4 .ms-desc{color:rgba(232,224,208,0.08);}
+
+    .milestone.dust-5 .ms-threshold{color:rgba(201,168,76,0.1);}
+    .milestone.dust-5 .ms-title{color:rgba(232,224,208,0.1);}
+    .milestone.dust-5 .ms-desc{color:rgba(232,224,208,0.04);}
+
+    .milestone.dust-6 .ms-threshold{color:rgba(201,168,76,0.06);}
+    .milestone.dust-6 .ms-title{color:rgba(232,224,208,0.06);}
+    .milestone.dust-6 .ms-desc{color:rgba(232,224,208,0.02);}
+
+    /* Dust particle noise overlays */
+    .milestone.dust-2 .ms-dust,
+    .milestone.dust-3 .ms-dust,
+    .milestone.dust-4 .ms-dust,
+    .milestone.dust-5 .ms-dust,
+    .milestone.dust-6 .ms-dust{
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      mix-blend-mode:multiply;
+    }
+    .milestone.dust-2 .ms-dust{opacity:0.15;}
+    .milestone.dust-3 .ms-dust{opacity:0.3;}
+    .milestone.dust-4 .ms-dust{opacity:0.5;}
+    .milestone.dust-5 .ms-dust{opacity:0.7;}
+    .milestone.dust-6 .ms-dust{opacity:0.85;}
+
+    /* ── Bottom message ── */
+    .roadmap-end{
+      text-align:center;
+      padding:64px 0 40px;
+    }
+    .roadmap-end-text{
+      font-size:clamp(14px,1.8vw,18px);font-weight:300;
+      font-style:italic;color:rgba(232,224,208,0.35);
+      line-height:1.6;
+    }
+    .roadmap-end-text strong{
+      color:rgba(201,168,76,0.4);font-weight:400;
+    }
+
+    /* ── Footer ── */
+    .footer{
+      width:100%;padding:32px 24px 24px;text-align:center;
+      background:#050403;
+      border-top:1px solid rgba(201,168,76,0.04);
+    }
+    .footer-row{
+      display:flex;gap:clamp(20px,4vw,36px);justify-content:center;
+      align-items:center;flex-wrap:wrap;margin-bottom:20px;
+    }
+    .footer-link{
+      color:rgba(201,168,76,0.6);text-decoration:none;
+      font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+      font-weight:400;transition:color 0.3s ease;
+      display:inline-flex;align-items:center;gap:5px;
+    }
+    .footer-link:hover{color:rgba(201,168,76,0.8);}
+    .footer-link svg{width:12px;height:12px;fill:currentColor;}
+    .footer-dust{
+      font-size:10px;letter-spacing:0.45em;text-transform:uppercase;
+      color:rgba(232,224,208,0.06);
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:600px){
+      .topnav{padding:0 16px;height:48px;}
+      .topnav-link{font-size:9px;letter-spacing:0.15em;}
+      .page{padding:100px 20px 60px;}
+      .timeline{padding-left:28px;}
+      .milestone::before{left:-32px;}
+      .footer-row{gap:16px;}
+    }
+    @media(max-width:380px){
+      .topnav-links{gap:10px;}
+    }
+
+    ::selection{background:rgba(201,168,76,0.25);color:#E8E0D0;}
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ═══ TOP NAV ═══ -->
+<nav class="topnav">
+  <a href="/" class="topnav-brand">$DUST</a>
+  <div class="topnav-links">
+    <a href="/" class="topnav-link">Home</a>
+    <a href="/manifesto" class="topnav-link">Manifesto</a>
+    <a href="/rules" class="topnav-link">Rules</a>
+    <a href="/faqs" class="topnav-link">FAQs</a>
+    <a href="/roadmap" class="topnav-link active">Roadmap</a>
+    <a href="/pfp" class="topnav-link">PFP</a>
+    <button class="nav-play" id="navPlayBtn" title="The Man in the Arena">
+      <span class="nav-play-icon" id="navPlayIcon">&#9654;</span>
+      <span class="nav-pulse"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ ROADMAP CONTENT ═══ -->
+<main class="page">
+
+  <div class="page-label">The Roadmap</div>
+  <h1 class="page-title">Earned. Not Promised.</h1>
+  <p class="page-subtitle">The roadmap does not unlock with time. It unlocks with Movers. The more humans that show up, the more the dust clears.</p>
+
+  <div class="timeline">
+
+    <!-- LAUNCH — Active -->
+    <div class="milestone active" data-movers="0">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">Launch</div>
+      <div class="ms-title">The Meme</div>
+      <div class="ms-desc">$DUST launches on Pump.fun. Pure meme. Zero tax. Zero mechanics. The narrative begins. The hunt begins. Prove you are human and find the real token.</div>
+    </div>
+
+    <!-- 1,000 Movers -->
+    <div class="milestone dust-1" data-movers="1000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">1,000 Movers</div>
+      <div class="ms-title">Phase 2 Announced</div>
+      <div class="ms-desc">The staking protocol is revealed. One token, two phases. Deposit your $DUST. Create your account. The economy begins to take shape.</div>
+    </div>
+
+    <!-- 2,500 Movers -->
+    <div class="milestone dust-1" data-movers="2500">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">2,500 Movers</div>
+      <div class="ms-title">Verification Beta</div>
+      <div class="ms-desc">Humans verify humans. The first line of defense against bots and machines. Proof of Life is no longer a concept. It is infrastructure.</div>
+    </div>
+
+    <!-- 5,000 Movers -->
+    <div class="milestone dust-2" data-movers="5000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">5,000 Movers</div>
+      <div class="ms-title">Task Marketplace</div>
+      <div class="ms-desc">Post work. Find work. Get paid in $DUST. The gig economy rebuilt by the people who do the work. Every task verified. Every payment on-chain.</div>
+    </div>
+
+    <!-- 10,000 Movers -->
+    <div class="milestone dust-2" data-movers="10000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">10,000 Movers</div>
+      <div class="ms-title">Decay Activates</div>
+      <div class="ms-desc">The engine turns on. Every token has a lifespan. Complete your daily tasks or return to the Dust Pool. The economy breathes. The lazy fund the active.</div>
+    </div>
+
+    <!-- 25,000 Movers -->
+    <div class="milestone dust-3" data-movers="25000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">25,000 Movers</div>
+      <div class="ms-title">The Social Layer</div>
+      <div class="ms-desc">Feed. Profiles. Dust Score visible on every name. The platform where your identity is yours, your reputation is earned, and your data belongs to you.</div>
+    </div>
+
+    <!-- 50,000 Movers -->
+    <div class="milestone dust-3" data-movers="50000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">50,000 Movers</div>
+      <div class="ms-title">Tipping Goes Live</div>
+      <div class="ms-desc">Send $DUST to anyone. Both clocks reset. Circulation replaces accumulation. Every tip is proof that someone moved you.</div>
+    </div>
+
+    <!-- 100,000 Movers -->
+    <div class="milestone dust-4" data-movers="100000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">100,000 Movers</div>
+      <div class="ms-title">The Physical World</div>
+      <div class="ms-desc">$DUST leaves the screen. Wearables. Merchandise. The dissolving fingerprint in the real world. The movement becomes visible on the streets.</div>
+    </div>
+
+    <!-- 250,000 Movers -->
+    <div class="milestone dust-4" data-movers="250000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">250,000 Movers</div>
+      <div class="ms-title">The Launchpad</div>
+      <div class="ms-desc">New tokens launch through the DUST ecosystem. Every project screened by humans, not algorithms. The economy becomes a platform for other economies.</div>
+    </div>
+
+    <!-- 500,000 Movers -->
+    <div class="milestone dust-5" data-movers="500000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">500,000 Movers</div>
+      <div class="ms-title">The Sovereign Treasury</div>
+      <div class="ms-desc">The DAO acquires real-world assets. Resources humans need to survive — owned by the people who proved they are still alive. Not a government. Not a corporation. Movers.</div>
+    </div>
+
+    <!-- 1,000,000 Movers -->
+    <div class="milestone dust-6" data-movers="1000000">
+      <div class="ms-dust"></div>
+      <div class="ms-threshold">1,000,000 Movers</div>
+      <div class="ms-title">Equilibrium</div>
+      <div class="ms-desc">90-day lifespan. The economy sustains itself. A parallel civilization layer that runs alongside every government on earth. The dust never settles again.</div>
+    </div>
+
+  </div>
+
+  <div class="roadmap-end">
+    <div class="roadmap-end-text">
+      What lies beyond is buried in the dust.<br>
+      <strong>Keep moving and it clears.</strong>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-row">
+    <a href="https://dexscreener.com/solana/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">DexScreener</a>
+    <a href="https://pump.fun/coin/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">Pump.fun</a>
+    <a href="https://moonshot.money" class="footer-link" target="_blank">Moonshot</a>
+    <a href="https://x.com/0xAphar" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      0xAphar
+    </a>
+    <a href="https://x.com/TheDust_Coin" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      TheDust_Coin
+    </a>
+    <a href="https://t.me/TheDustCoin" class="footer-link" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-dust">from dust</div>
+</footer>
+
+<!-- ═══ Audio (hidden) ═══ -->
+<audio id="arena-audio" preload="auto" src="/manifesto/arena.mp3"></audio>
+
+<script>
+(function(){
+  // Nav play button
+  var audio = document.getElementById('arena-audio');
+  var btn = document.getElementById('navPlayBtn');
+  var icon = document.getElementById('navPlayIcon');
+  var isPlaying = false;
+
+  btn.addEventListener('click', function(){
+    if(isPlaying){
+      audio.pause();
+      audio.currentTime = 0;
+      isPlaying = false;
+      icon.innerHTML = '\u25B6';
+      icon.style.marginLeft = '2px';
+      icon.style.fontSize = '10px';
+      icon.style.letterSpacing = '0';
+      btn.classList.remove('playing');
+      return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+    isPlaying = true;
+    icon.innerHTML = '\u275A\u275A';
+    icon.style.marginLeft = '0';
+    icon.style.fontSize = '9px';
+    icon.style.letterSpacing = '1px';
+    btn.classList.add('playing');
+  });
+
+  audio.addEventListener('ended', function(){
+    isPlaying = false;
+    icon.innerHTML = '\u25B6';
+    icon.style.marginLeft = '2px';
+    icon.style.fontSize = '10px';
+    icon.style.letterSpacing = '0';
+    btn.classList.remove('playing');
+  });
+
+  // Roadmap: In production, fetch real mover count and update milestone classes
+  // For now, only "Launch" is active. As movers grow, swap classes:
+  // .dust-X -> .unlocked or .active
+  //
+  // Example usage:
+  // updateRoadmap(currentMoverCount);
+  //
+  function updateRoadmap(moverCount){
+    var milestones = document.querySelectorAll('.milestone');
+    var thresholds = [0, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+    var dustLevels = ['active','dust-1','dust-1','dust-2','dust-2','dust-3','dust-3','dust-4','dust-4','dust-5','dust-6'];
+
+    milestones.forEach(function(ms, i){
+      var threshold = thresholds[i];
+      // Remove all state classes
+      ms.classList.remove('active','unlocked','dust-1','dust-2','dust-3','dust-4','dust-5','dust-6');
+
+      if(moverCount >= threshold){
+        // Find the highest reached milestone
+        var isHighest = (i === thresholds.length - 1) || (moverCount < thresholds[i+1]);
+        if(isHighest){
+          ms.classList.add('active');
+        } else {
+          ms.classList.add('unlocked');
+        }
+        // Update the dot
+        ms.querySelector('.ms-dust').style.opacity = '0';
+      } else {
+        // Calculate dust level based on distance from current progress
+        var stepsAhead = i - thresholds.filter(function(t){ return moverCount >= t; }).length;
+        var dust = Math.min(6, stepsAhead + 1);
+        ms.classList.add('dust-' + dust);
+      }
+    });
+  }
+
+  // Expose for testing: updateRoadmap(5000) in console to see effect
+  window.updateRoadmap = updateRoadmap;
+})();
+</script>
+
+</body>
+</html>
