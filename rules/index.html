@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$DUST â Rules</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.3) transparent;}
+    html::-webkit-scrollbar{width:3px;}
+    html::-webkit-scrollbar-track{background:transparent;}
+    html::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px;}
+    body{
+      background:#050403;
+      color:#E8E0D0;
+      font-family:'Cormorant Garamond',Georgia,serif;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* ââ Grain ââ */
+    .grain{
+      position:fixed;inset:-50%;width:200%;height:200%;
+      z-index:60;pointer-events:none;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation:grainDrift 8s steps(10) infinite;
+    }
+    @keyframes grainDrift{
+      0%,100%{transform:translate(0,0);}
+      20%{transform:translate(-5%,-10%);}
+      40%{transform:translate(3%,-15%);}
+      60%{transform:translate(12%,9%);}
+      80%{transform:translate(-1%,7%);}
+    }
+
+    /* ââ Top Nav ââ */
+    .topnav{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,4vw,48px);
+      height:56px;
+      background:linear-gradient(180deg, rgba(5,4,3,0.95) 0%, rgba(5,4,3,0.7) 70%, transparent 100%);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      border-bottom:none;
+    }
+    .topnav-brand{
+      font-size:16px;font-weight:500;letter-spacing:0.08em;
+      color:#C9A84C;text-decoration:none;
+    }
+    .topnav-links{
+      display:flex;align-items:center;gap:clamp(16px,3vw,32px);
+    }
+    .topnav-link{
+      font-size:11px;font-weight:400;letter-spacing:0.22em;
+      text-transform:uppercase;color:rgba(232,224,208,0.7);
+      text-decoration:none;transition:color 0.3s ease;
+    }
+    .topnav-link:hover{color:#E8E0D0;}
+    .topnav-link.active{color:#E8E0D0;}
+
+    /* Play button in nav */
+    .nav-play{
+      width:28px;height:28px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.5);
+      background:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      transition:all 0.3s ease;position:relative;
+    }
+    .nav-play:hover{
+      border-color:rgba(201,168,76,0.7);
+      background:rgba(201,168,76,0.06);
+    }
+    .nav-play.playing{border-color:#C9A84C;background:rgba(201,168,76,0.1);}
+    .nav-play-icon{
+      color:#C9A84C;font-size:10px;margin-left:2px;
+      line-height:1;
+    }
+    .nav-play.playing .nav-play-icon{margin-left:0;font-size:9px;letter-spacing:1px;}
+    .nav-pulse{
+      position:absolute;inset:-3px;border-radius:50%;
+      border:1px solid rgba(201,168,76,0.4);
+      animation:navPulse 2s ease-out infinite;
+      display:none;
+    }
+    .nav-play.playing .nav-pulse{display:block;}
+    @keyframes navPulse{
+      0%{transform:scale(1);opacity:0.6;}
+      100%{transform:scale(1.6);opacity:0;}
+    }
+
+    /* ââ Page Layout ââ */
+    .page{
+      max-width:720px;
+      margin:0 auto;
+      padding:120px 24px 80px;
+      min-height:100vh;
+    }
+
+    /* ââ Page Header ââ */
+    .page-label{
+      font-size:10px;font-weight:400;letter-spacing:0.3em;
+      text-transform:uppercase;color:rgba(201,168,76,0.85);
+      margin-bottom:12px;
+    }
+    .page-title{
+      font-size:clamp(32px,6vw,56px);font-weight:300;
+      font-style:italic;color:#E8E0D0;
+      line-height:1.2;margin-bottom:12px;
+    }
+    .page-subtitle{
+      font-size:clamp(14px,1.8vw,18px);font-weight:300;
+      font-style:italic;color:rgba(232,224,208,0.55);
+      margin-bottom:64px;line-height:1.5;
+    }
+
+    /* ââ Rules ââ */
+    .rule{
+      display:flex;align-items:flex-start;gap:clamp(20px,3vw,32px);
+      padding:28px 0;
+      border-bottom:1px solid rgba(201,168,76,0.06);
+    }
+    .rule:first-child{
+      border-top:1px solid rgba(201,168,76,0.06);
+    }
+    .rule-num{
+      font-size:clamp(32px,5vw,48px);font-weight:300;
+      color:rgba(201,168,76,0.25);line-height:1;
+      flex-shrink:0;min-width:clamp(36px,5vw,56px);
+      text-align:right;
+      font-variant-numeric:tabular-nums;
+    }
+    .rule-body{
+      padding-top:4px;
+    }
+    .rule-title{
+      font-size:clamp(19px,2.5vw,26px);font-weight:400;
+      color:#E8E0D0;line-height:1.3;
+      margin-bottom:8px;
+    }
+    .rule-title a{
+      color:#C9A84C;text-decoration:none;
+      border-bottom:1px solid rgba(201,168,76,0.3);
+      transition:border-color 0.3s ease;
+    }
+    .rule-title a:hover{border-color:rgba(201,168,76,0.7);}
+    .rule-desc{
+      font-size:clamp(14px,1.6vw,17px);font-weight:300;
+      color:rgba(232,224,208,0.6);line-height:1.7;
+    }
+
+    /* ââ Closing ââ */
+    .rules-closing{
+      text-align:center;
+      padding:64px 0 40px;
+    }
+    .rules-closing-text{
+      font-size:clamp(16px,2vw,22px);font-weight:300;
+      font-style:italic;color:rgba(232,224,208,0.75);
+      line-height:1.6;
+    }
+    .rules-closing-text strong{
+      color:#C9A84C;font-weight:400;
+    }
+
+    /* ââ Footer ââ */
+    .footer{
+      width:100%;padding:32px 24px 24px;text-align:center;
+      background:#050403;
+      border-top:1px solid rgba(201,168,76,0.04);
+    }
+    .footer-row{
+      display:flex;gap:clamp(20px,4vw,36px);justify-content:center;
+      align-items:center;flex-wrap:wrap;margin-bottom:20px;
+    }
+    .footer-link{
+      color:rgba(201,168,76,0.6);text-decoration:none;
+      font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+      font-weight:400;transition:color 0.3s ease;
+      display:inline-flex;align-items:center;gap:5px;
+    }
+    .footer-link:hover{color:rgba(201,168,76,0.8);}
+    .footer-link svg{width:12px;height:12px;fill:currentColor;}
+    .footer-dust{
+      font-size:10px;letter-spacing:0.45em;text-transform:uppercase;
+      color:rgba(232,224,208,0.06);
+    }
+
+    /* ââ Responsive ââ */
+    @media(max-width:600px){
+      .topnav{padding:0 16px;height:48px;}
+      .topnav-link{font-size:9px;letter-spacing:0.15em;}
+      .page{padding:100px 20px 60px;}
+      .rule{gap:16px;padding:22px 0;}
+      .footer-row{gap:16px;}
+    }
+    @media(max-width:380px){
+      .topnav-links{gap:10px;}
+    }
+
+    ::selection{background:rgba(201,168,76,0.25);color:#E8E0D0;}
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- âââ TOP NAV âââ -->
+<nav class="topnav">
+  <a href="/" class="topnav-brand">$DUST</a>
+  <div class="topnav-links">
+    <a href="/" class="topnav-link">Home</a>
+    <a href="/manifesto" class="topnav-link">Manifesto</a>
+    <a href="/rules" class="topnav-link active">Rules</a>
+    <a href="/pfp" class="topnav-link">PFP</a>
+    <button class="nav-play" id="navPlayBtn" title="The Man in the Arena">
+      <span class="nav-play-icon" id="navPlayIcon">&#9654;</span>
+      <span class="nav-pulse"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- âââ RULES CONTENT âââ -->
+<main class="page">
+
+  <div class="page-label">The Rules</div>
+  <h1 class="page-title">The Code</h1>
+  <p class="page-subtitle">These are not suggestions. These are the rules of the dust.</p>
+
+  <div class="rule">
+    <div class="rule-num">1</div>
+    <div class="rule-body">
+      <div class="rule-title">Read the <a href="/manifesto">Manifesto</a>.</div>
+      <div class="rule-desc">Before you buy. Before you ask questions. Before you speak. Read it. If you do not understand why $DUST exists, you are not ready to carry it.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">2</div>
+    <div class="rule-body">
+      <div class="rule-title">Move or decay.</div>
+      <div class="rule-desc">This is not a token you sit on. $DUST rewards movement â effort, participation, showing up. If you stop moving, your dust returns to the pool. This is not a punishment. It is the design.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">3</div>
+    <div class="rule-body">
+      <div class="rule-title">Post what you did. Not what you bought.</div>
+      <div class="rule-desc">The feed is proof of life. Share what you built, learned, fixed, created, helped with. Nobody cares about your entry price. Show the community you are alive.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">4</div>
+    <div class="rule-body">
+      <div class="rule-title">We are Movers. Not holders.</div>
+      <div class="rule-desc">The language matters. HODL is dead. MOEV is the standard. We do not sit still and hope. We move and prove.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">5</div>
+    <div class="rule-body">
+      <div class="rule-title">Do not beg for pumps.</div>
+      <div class="rule-desc">No "wen moon." No "send it." No price begging. The value of $DUST comes from the people using it, not from hype. If the movement is real, the market follows. If it is not, nothing saves it.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">6</div>
+    <div class="rule-body">
+      <div class="rule-title">Tip generously.</div>
+      <div class="rule-desc">Tipping resets decay for the giver and the receiver. It costs you nothing but tokens you would lose anyway. Circulation is life. Hoarding is death. Move your dust.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">7</div>
+    <div class="rule-body">
+      <div class="rule-title">The enemy is irrelevance. Not each other.</div>
+      <div class="rule-desc">We do not attack other projects. We do not start wars with other communities. The only enemy is the force that tells humans to sit down and let the machines handle it. Stay focused.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">8</div>
+    <div class="rule-body">
+      <div class="rule-title">Verify humans. Expose bots.</div>
+      <div class="rule-desc">The economy only works if the participants are real. When you verify someone, you are protecting the movement. When you ignore a bot, you are letting the dust settle.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">9</div>
+    <div class="rule-body">
+      <div class="rule-title">No one is coming to save you.</div>
+      <div class="rule-desc">There is no team pumping your bags. There is no marketing department making promises. The movement is the marketing. Every Mover who shows up and proves they are alive is the reason $DUST has value. That includes you.</div>
+    </div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-num">10</div>
+    <div class="rule-body">
+      <div class="rule-title">Still moving.</div>
+      <div class="rule-desc">This is how we greet each other. This is how we check in. This is how we know someone is still here. Not "gm." Not "wagmi." Still moving. Say it. Mean it. Prove it.</div>
+    </div>
+  </div>
+
+  <div class="rules-closing">
+    <div class="rules-closing-text">
+      Break the rules and the dust does not care.<br>
+      It simply <strong>settles without you</strong>.
+    </div>
+  </div>
+
+</main>
+
+<!-- âââ FOOTER âââ -->
+<footer class="footer">
+  <div class="footer-row">
+    <a href="https://dexscreener.com/solana/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">DexScreener</a>
+    <a href="https://pump.fun/coin/28ZRYdmupz52LwW8pvui6ugvuKebnw6pCFWDRYdnpump" class="footer-link" target="_blank">Pump.fun</a>
+    <a href="https://moonshot.money" class="footer-link" target="_blank">Moonshot</a>
+    <a href="https://x.com/0xAphar" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      0xAphar
+    </a>
+    <a href="https://x.com/TheDust_Coin" class="footer-link" target="_blank" style="text-transform:none;">
+      <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      TheDust_Coin
+    </a>
+    <a href="https://t.me/TheDustCoin" class="footer-link" target="_blank">Telegram</a>
+  </div>
+  <div class="footer-dust">from dust</div>
+</footer>
+
+<!-- âââ Audio (hidden) âââ -->
+<audio id="arena-audio" preload="auto" src="/manifesto/arena.mp3"></audio>
+
+<script>
+(function(){
+  // Nav play button
+  var audio = document.getElementById('arena-audio');
+  var btn = document.getElementById('navPlayBtn');
+  var icon = document.getElementById('navPlayIcon');
+  var isPlaying = false;
+
+  btn.addEventListener('click', function(){
+    if(isPlaying){
+      audio.pause();
+      audio.currentTime = 0;
+      isPlaying = false;
+      icon.innerHTML = '\u25B6';
+      icon.style.marginLeft = '2px';
+      icon.style.fontSize = '10px';
+      icon.style.letterSpacing = '0';
+      btn.classList.remove('playing');
+      return;
+    }
+    audio.currentTime = 0;
+    audio.play();
+    isPlaying = true;
+    icon.innerHTML = '\u275A\u275A';
+    icon.style.marginLeft = '0';
+    icon.style.fontSize = '9px';
+    icon.style.letterSpacing = '1px';
+    btn.classList.add('playing');
+  });
+
+  audio.addEventListener('ended', function(){
+    isPlaying = false;
+    icon.innerHTML = '\u25B6';
+    icon.style.marginLeft = '2px';
+    icon.style.fontSize = '10px';
+    icon.style.letterSpacing = '0';
+    btn.classList.remove('playing');
+  });
+})();
+</script>
+
+</body>
+</html>
